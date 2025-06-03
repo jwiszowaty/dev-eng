@@ -1,0 +1,23 @@
+{
+  "name": "dev-eng",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "firebase": "^11.8.1",
+    "googleapis": "^149.0.0",
+    "next": "15.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@google-cloud/local-auth": "^3.0.1",
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4"
+  }
+}
