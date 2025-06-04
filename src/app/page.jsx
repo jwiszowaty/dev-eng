@@ -24,7 +24,12 @@ export default function Home() {
             <SignInWithGoogle />
           </div>
         )}
-
+        {user && <button type="button" className="bg-indigo-500 ..." disabled>
+  <svg className="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24">
+    {/* <!-- ... --> */}
+  </svg>
+  Processing…
+</button>}
         {loading && (
           <div className="mt-6 text-center text-sm italic text-gray-500 dark:text-gray-400">
             wait...
