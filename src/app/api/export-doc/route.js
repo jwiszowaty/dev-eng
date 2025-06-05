@@ -13,7 +13,6 @@ export async function GET(request) {
       fileId: documentId,
       fields: "name",
     });
-
     const title = metadataRes.data.name;
       
     const result = await drive.files.export(
@@ -32,8 +31,8 @@ export async function GET(request) {
         .on("error", reject);
     });
 
-    return new Response({html, title}, {
-      headers: { "Content-Type": "text/html" },
+    return new Response(JSON.stringify({html, title}), {
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {

@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
-
+import { CollapsibleDoc } from "./CollapsibleDoc";
+import Note from "./Note"
 export default function Notes() {
-  const [doc, setDoc] = useState(null);
-  const docIds = [
-    "1NLZJOANA6pKNGXDqffh-LBFV0iLDwlXJGoSnoNRjs5k",
-    "1ejy7cffD3gk7BUiMk2_96_PJd7FW5FwaOh7cfWSr31U",
-  ];
+  const [docs, setDocs] = useState(null);
+  const [ids, setIds] = useState(null);
+  const [docId, setDocId] = useState(ids?.[0].id ?? null)
+  const rootFolderId = "1dpBw79arFFZuHYajuPqvvOcF3HdAY_1Z";
+  async function fetchDocIds(folderId) {
+    try {
+      await fetch(
+        `http://localhost:3000/api/export-docsAll?rootFolderId=${folderId}`
+      )
+        .then((response) => response.json())
+        .then((data) => setIds(data));
+    } catch (error) {
+      console.error("error ", error.message);
+    }
+  }
   async function fetchDoc(documentId) {
     try {
       const res = await fetch(`/api/export-doc?documentId=${documentId}`);
@@ -14,36 +25,43 @@ export default function Notes() {
         console.error(`Error fetching doc ${documentId}:`, error);
         return undefined;
       }
-      const html = await res.text();
-      return html;
+      const { html, title } = await res.json();
+      setDocs([])
+      return <CollapsibleDoc key={index} content={html} title={title} />;
     } catch (err) {
       console.error(`Exception fetching doc ${documentId}:`, err);
       return undefined;
     }
   }
+  async function fetchAndDisplay(documentId) {
+    setDocId(documentId)
+    await fetchDoc(docId)
+      .then((response) => response.json())
+      .then((data) => {
+        if (!docs.docId) {
+          fetchDoc(docId)
+        }
+        setDocs([...docs, data]);
+      });
+  }
   useEffect(() => {
-    const loadedDocs = [];
-    async function fetchDocs() {
-      for await (const docId of docIds) {
-        const data = await fetchDoc(docId);
-
-        loadedDocs.push(data);
-      }
-      setDoc(loadedDocs)
-    }
-    fetchDocs();
+    fetchDocIds(rootFolderId);
   }, []);
   return (
-    <>
+    <div className="flex flex-col">
       <p>Notes</p>
-      {doc && doc.map(({html, title}) => {
-        return (
-          <div>
-            <p>{title}</p>
-            <div className="max-w-3xl mx-auto p-4" dangerouslySetInnerHTML={{ __html: html }} />
-            </div>
-        )
-      })}
-    </>
+      {!ids && <p>Loading</p>}
+      <div className="flex flex-row">
+        <div className="flex flex-col">
+          {ids &&
+            ids.map((id) => (
+              <button key={id.id} onClick={() => fetchAndDisplay(id.id)}>
+                {id.name}
+              </button>
+            ))}
+        </div>
+          <Note html={docs?.documentId ?? "not found"} />
+      </div>
+    </div>
   );
 }
