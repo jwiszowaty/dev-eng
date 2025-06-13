@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function SignOut() {

@@ -10,6 +10,7 @@ export default function Home() {
   useEffect(() => {
     if (!loading && user) {
       router.replace("/dashboard");
+      localStorage.setItem("dev-eng-userEmail", user.email);
     }
   }, [loading, user]);
   return (
@@ -30,11 +31,6 @@ export default function Home() {
   </svg>
   Processing…
 </button>}
-        {loading && (
-          <div className="mt-6 text-center text-sm italic text-gray-500 dark:text-gray-400">
-            wait...
-          </div>
-        )}
       </div>
     </div>
   );

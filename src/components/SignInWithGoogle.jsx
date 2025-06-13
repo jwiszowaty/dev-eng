@@ -3,11 +3,11 @@ import { auth, googleProvider } from "../../firebase";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function SignInWithGoogle() {
+  const { setAccessToken } = useAuth();
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      const { setAccessToken } = useAuth();
       setAccessToken(credential.accessToken);
     } catch (error) {
       alert(error.message);

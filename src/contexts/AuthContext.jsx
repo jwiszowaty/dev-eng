@@ -2,12 +2,17 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
 const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const logout = () => signOut(auth);
+  const router = useRouter();
+  const logout = () => {
+    signOut(auth);
+    router.replace("/");
+  };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser); // sets user to null if signed out

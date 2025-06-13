@@ -1,13 +1,16 @@
 import { google } from "googleapis";
+import {connectDB, Document} from "../../../../db.js";
+
 export async function GET(request) {
-    try {
+  try {
+    const documentId = request.nextUrl.searchParams.get("documentId");
+
     const auth = new google.auth.GoogleAuth({
       keyFile: process.env.SERVICE_FILE_PATH,
       scopes: ["https://www.googleapis.com/auth/drive.readonly"],
     });
 
     const drive = google.drive({ version: "v3", auth });
-    const documentId = request.nextUrl.searchParams.get("documentId");
 
       const metadataRes = await drive.files.get({
       fileId: documentId,
@@ -39,4 +42,22 @@ export async function GET(request) {
       status: 500,
     });
   }
+}
+
+
+export async function POST(request) {
+    try {
+        const { userEmail, documentId, name, html } = await request.json();;
+        
+        await connectDB();
+
+        const newDoc = new Document({ userEmail, documentId, name, html })
+
+        const savedDoc = await newDoc.save();
+
+        return Response.json({ success: true, data: savedDoc }, { status: 201 })
+    } catch (error) {
+        console.error("Saving document failed: ", error);
+        return Response.json({ success: false, error: error.message }, { status: 500 })
+    }
 }

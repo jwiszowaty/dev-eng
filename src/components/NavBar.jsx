@@ -1,5 +1,4 @@
 import SignOut from "../components/SignOut";
-import Booking from "./Booking";
 import Notes from "./Notes";
 export default function NavBar({ content, setContent }) {
   return (
