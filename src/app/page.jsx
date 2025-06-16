@@ -8,11 +8,11 @@ export default function Home() {
   const { user, loading } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if (!loading && user) {
+    if (!loading && user?.uid) {
       router.replace("/dashboard");
-      localStorage.setItem("dev-eng-userEmail", user.email);
     }
   }, [loading, user]);
+  if (loading) return <p>wait</p>;
   return (
     <div className="flex items-center justify-center min-h-screen dark:bg-gray-900 px-4">
       <div className="bg-gray-300 dark:bg-gray-800 shadow-2xl rounded-2xl p-8 max-w-md w-full text-[#4A4A4A] dark:text-gray-200">

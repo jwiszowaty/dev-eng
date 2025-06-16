@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
+
 const userSchema = new Schema({
     userId: { type: String, required: true },
     folderId: {type: String, required: false}
 }, { collection: "users" })
 const documentSchema = new Schema({
-    userEmail: { type: String, required: true },
+    userId: { type: String, required: true },
     documentId: { type: String, required: true },
     name: { type: String, required: true },
     html: { type: String, required: true },

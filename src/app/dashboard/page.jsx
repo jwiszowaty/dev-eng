@@ -4,19 +4,16 @@ import NavBar from "../../components/NavBar";
 import Notes from "../../components/Notes";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { getUser } from "../func";
 export default function Dashboard() {
   const router = useRouter();
   const [content, setContent] = useState(<Notes />);
   const { user } = useAuth();
   useEffect(() => {
-    if (!user) {
+    if (!user?.uid) {
       router.replace('/')
-    } else {
-      getUser(user.uid)
     }
   }, [user])
-  if (!user) return null;
+  if (!user?.uid) return null;
   return (
     <>
       <header className="flex gap-20">
