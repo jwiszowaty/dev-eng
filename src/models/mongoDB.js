@@ -12,8 +12,8 @@ const documentSchema = new Schema({
     html: { type: String, required: true },
 }, { collection: "documents" })
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
-const Document = mongoose.models.Document || mongoose.model("Document", documentSchema);
+const User = mongoose.models.User ?? mongoose.model("User", userSchema);
+const Document = mongoose.models.Document ?? mongoose.model("Document", documentSchema);
 
 const connectDB = async () => {
     try {

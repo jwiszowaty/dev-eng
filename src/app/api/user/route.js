@@ -1,4 +1,5 @@
 import { connectDB, User } from "../../../models/mongoDB.js";
+import { findUser } from "../services/userService.js";
 
 export async function GET(request) {
     try {
@@ -6,7 +7,7 @@ export async function GET(request) {
         const userId = url.searchParams.get("userId");
 
         await connectDB();
-        const response = await User.findOne({ userId }).exec();
+        const response = await findUser(userId);
 
         return Response.json({ success: true, data: response }, { status: 200 })
     } catch (error) {

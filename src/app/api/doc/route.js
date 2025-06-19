@@ -1,4 +1,4 @@
-import { createDoc, findDoc } from "@/services/docService.js";
+import { createDoc, findDoc } from "@/app/api/services/docService.js";
 
 export async function GET(request) {
   try {
@@ -20,7 +20,7 @@ export async function POST(request) {
     const { userId, documentId, name, html } = await request.json();;
 
     const newDoc = await createDoc(userId, documentId, name, html);
-    
+
     return Response.json({ success: true, data: newDoc }, { status: 201 })
   } catch (error) {
     console.error("Saving document failed: ", error);

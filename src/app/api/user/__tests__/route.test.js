@@ -20,7 +20,7 @@ afterAll(async () => {
 })
 
 describe("POST /api/user", () => {
-    it("should save a sure and return 201 response", async () => {
+    it("should save a user and return 201 response", async () => {
         const request = new Request("http://localhost/api/user", {
             method: "POST",
             body: JSON.stringify({ userId: "test-user-123" }),
@@ -35,7 +35,7 @@ describe("POST /api/user", () => {
     })
 })
 describe("GET /api/user?userId=test-user-123", () => {
-    it("should find the user and return 201 response", async () => {
+    it("should find the user and return 200 response", async () => {
         const request = new Request("http://localhost/api/user?userId=test-user-123", {
             method: "GET"
         })

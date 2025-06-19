@@ -1,29 +1,15 @@
 import { google } from "googleapis";
-import { connectDB, Document } from "../models/mongoDB.js";
-
-export async function findDoc(userId, documentId) {
-    console.log("findDoc: ", userId);
-    
-    await connectDB();
-    let doc = await Document.findOne({ userId, documentId }).exec();
-    if (!doc) {
-        doc = await fetchGoogleDoc(documentId);
-        return await createDoc(userId, documentId, doc.name, doc.html);
-    }
-    return doc;
-}
-
-export async function createDoc(userId, documentId, name, html) {
-    console.log("createDoc: ", "userId=", userId, ", documentId=", documentId);
-    
-    await connectDB();
-    const newDoc = new Document({ userId, documentId, name, html })
-    return await newDoc.save();
-}
-async function fetchGoogleDoc(documentId) {
-    console.log("fetchGoogleDoc: ", documentId);
-    
+export async function GET(request) {
     try {
+        const documentId = request.nextUrl.searchParams.get("documentId");
+        console.log("GET /api/google-doc with documentId:", documentId);
+        
+        if (!documentId) {
+            return new Response(
+                JSON.stringify({ error: "documentId is required" }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
         const auth = new google.auth.GoogleAuth({
             keyFile: process.env.SERVICE_FILE_PATH,
             scopes: ["https://www.googleapis.com/auth/drive.readonly"],

@@ -1,16 +1,21 @@
 import { google } from "googleapis";
 
 export async function GET(request) {
-    const auth = new google.auth.GoogleAuth({
-      keyFile: process.env.SERVICE_FILE_PATH, // JSON key file of service account
-      scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+  const rootFolderId = request.nextUrl.searchParams.get("rootFolderId")
+  if (!rootFolderId) {
+    return new Response(JSON.stringify({ error: "rootFolderId is required" }), {
+      status: 400,
     });
-    const rootFolderId = request.nextUrl.searchParams.get("rootFolderId")
-    const drive = google.drive({ version: "v3", auth });
+  }
+  const auth = new google.auth.GoogleAuth({
+    keyFile: process.env.SERVICE_FILE_PATH, // JSON key file of service account
+    scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+  });
+  const drive = google.drive({ version: "v3", auth });
 
-    const allDocs = [];
-    
-    async function walkFolder(folderId) {
+  const allDocs = [];
+
+  async function walkFolder(folderId) {
     const res = await drive.files.list({
       q: `'${folderId}' in parents and trashed = false`,
       fields: "files(id, name, mimeType)",
@@ -27,10 +32,10 @@ export async function GET(request) {
         allDocs.push(file);
       }
     }
-    }
+  }
 
-    // You can shape the response as you like. Example: only IDs
-    try {
+  // You can shape the response as you like. Example: only IDs
+  try {
     await walkFolder(rootFolderId);
 
     return new Response(JSON.stringify(allDocs), {

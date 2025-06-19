@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Note from "./Note";
 import { getDocIds } from "@/app/func";
 import { useAuth } from "@/contexts/AuthContext";
-import { findDoc } from "@/services/docService";
 export default function Notes() {
   const [ids, setIds] = useState(null);
   const [docDisplayed, setDocDisplayed] = useState(null);
@@ -11,15 +10,14 @@ export default function Notes() {
   const { user } = useAuth();
 
   async function showDoc(document) {
-      setLoading(true);
-      const docId = document.id;
-      const name = document.name;
-      setDocDisplayed({ docId, name });
-      const doc = await findDoc(user.uid, docId);
-      setDocDisplayed({ id, name, html: doc.html });
-      setTimeout(() => {
-          setLoading(false);
-      }, 200);
+    setLoading(true);
+    const docId = document.id;
+    const name = document.name;
+    setDocDisplayed({ docId, name });
+    const doc = await fetch(`/api/doc?userId=${user.uid}&documentId=${docId}`)
+      .then((res) => res.json());
+    setDocDisplayed({ docId, name, html: doc.html });
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -36,10 +34,7 @@ export default function Notes() {
         <div className="flex flex-col w-2/6">
           {ids &&
             ids.map((doc) => (
-              <button
-                key={doc.id}
-                onClick={() => showDoc(doc)}
-              >
+              <button key={doc.id} onClick={() => showDoc(doc)}>
                 {doc.name}
               </button>
             ))}

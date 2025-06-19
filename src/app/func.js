@@ -1,22 +1,24 @@
-import { findDoc } from "@/services/docService";
-import { findUser } from "@/services/userService";
-
 export async function getDocIds(setIds, setDocDisplayed, setLoading, userId) {
     try {
-            console.log("getDocIds: ", userId);
-            
-            const user = await findUser(userId);
-            const folderId = user.data.folderId;
-            const response = await fetch(
-                `http://localhost:3000/api/export-docsAll?rootFolderId=${folderId}`
-            );
-            const data = await response.json();
-            const firstDoc = data[0];
-            setIds(data);
-            const html = await findDoc(userId, firstDoc.id);
-            setDocDisplayed({ ...firstDoc, html });
-            setLoading(false);
-        } catch (error) {
-            console.error("error ", error.message);
-        }
+        const user = await fetch(`/api/user?userId=${userId}`, { method: "GET" })
+            .then((res) => res.json())
+            .catch((error) => console.error("error fetching user: ", error));
+        const folderId = await user.data.folderId;
+        
+        const docIds = await fetch(`/api/export-docIds?rootFolderId=${folderId}`)
+        .then((res) => res.json())
+        .catch((error) => console.error("error fetching document IDs: ", error));
+        const firstDoc = docIds[0];
+        setIds(docIds);
+        const html = await fetch(`/api/doc?userId=${userId}&documentId=${firstDoc.id}`, {method: "GET"})
+            .then((res) => res.json())
+            .then((data) => {
+                return data.data.html;
+            })
+            .catch((error) => console.error("error document user: ", error));
+        setDocDisplayed({ ...firstDoc, html });
+        setLoading(false);
+    } catch (error) {
+        console.error("error ", error.message);
+    }
 }
