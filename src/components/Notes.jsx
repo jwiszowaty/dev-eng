@@ -45,10 +45,6 @@ export default function Notes() {
   console.error("API error:", userData.error);
   return;
         }
-        if (!Array.isArray(userData.data)) {
-  console.error("Expected array but got:", userData.data);
-  return;
-}
 
         const folderId = await userData.data.folderId;
         const docIds = await fetch(`/api/export-docIds?rootFolderId=${folderId}`)
