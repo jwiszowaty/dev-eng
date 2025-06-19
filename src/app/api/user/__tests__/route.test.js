@@ -23,7 +23,7 @@ describe("POST /api/user", () => {
     it("should save a user and return 201 response", async () => {
         const request = new Request("http://localhost/api/user", {
             method: "POST",
-            body: JSON.stringify({ userId: "test-user-123" }),
+            body: JSON.stringify({ userId: "PnMJ5PtCvlX6DPXBrKzexee3rcz1" }),
             headers: { "Content-Type": "application/json" }
         });
 
@@ -31,10 +31,10 @@ describe("POST /api/user", () => {
         const json = await response.json();
         expect(response.status).toBe(201);
         expect(json.success).toBe(true);
-        expect(json.data.userId).toBe('test-user-123')
+        expect(json.data.userId).toBe('PnMJ5PtCvlX6DPXBrKzexee3rcz1')
     })
 })
-describe("GET /api/user?userId=test-user-123", () => {
+describe("GET /api/user?userId=PnMJ5PtCvlX6DPXBrKzexee3rcz1", () => {
     it("should find the user and return 200 response", async () => {
         const request = new Request("http://localhost/api/user?userId=test-user-123", {
             method: "GET"

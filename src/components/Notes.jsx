@@ -41,7 +41,15 @@ export default function Notes() {
             .then((res) => res.json())
             .catch((error) => console.error("error fetching user: ", error));
         console.log(userData);
-        
+        if (userData.success) {
+  console.error("API error:", userData.error);
+  return;
+        }
+        if (!Array.isArray(userData.data)) {
+  console.error("Expected array but got:", userData.data);
+  return;
+}
+
         const folderId = await userData.data.folderId;
         const docIds = await fetch(`/api/export-docIds?rootFolderId=${folderId}`)
         .then((res) => res.json())

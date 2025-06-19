@@ -2,7 +2,7 @@ import { connectDB, User } from "../../../models/mongoDB.js";
 
 export async function GET(request) {
     try {
-        const url = new URL(request.url, 'http://localhost'); // default base
+        const url = new URL(request.url);
         const userId = url.searchParams.get("userId");
 
         await connectDB();
