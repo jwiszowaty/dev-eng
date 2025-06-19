@@ -15,47 +15,61 @@ export default function Notes() {
     const docId = document.id;
     const name = document.name;
     setDocDisplayed({ docId, name });
-    doc = await fetch(`/api/doc?userId=${user.uid}&documentId=${docId}`)
-      .then((res) => res.json())
+    doc = await fetch(`/api/doc?userId=${user.uid}&documentId=${docId}`).then(
+      (res) => res.json()
+    );
     if (doc.error == "Document not found") {
-      doc = await fetch(`/api/google-doc?documentId=${docId}`, {method: "GET"})
-            .then((res) => res.json())
+      doc = await fetch(`/api/google-doc?documentId=${docId}`, {
+        method: "GET",
+      })
+        .then((res) => res.json())
         .then((data) => {
-                return data;
-            })
+          return data;
+        })
         .catch((error) => console.error("error document user: ", error));
-      const document = {userId: user.uid, documentId: docId, name: doc.name, html: doc.html}
+      const document = {
+        userId: user.uid,
+        documentId: docId,
+        name: doc.name,
+        html: doc.html,
+      };
       await fetch(`/api/doc`, {
         method: "POST",
-        body: JSON.stringify(document)
-      })
+        body: JSON.stringify(document),
+      });
     }
-    setDocDisplayed({ docId, name, html: doc.data?.html?? doc.html });
+    setDocDisplayed({ docId, name, html: doc.data?.html ?? doc.html });
     setLoading(false);
   }
 
   useEffect(() => {
     if (user?.uid) {
       (async function () {
-      const userData = await fetch(`/api/user?userId=${user.uid}`, { method: "GET" })
-            .then((res) => res.json())
-            .catch((error) => console.error("error fetching user: ", error));
+        const userData = await fetch(`/api/user?userId=${user.uid}`, {
+          method: "GET",
+        })
+          .then((res) => res.json())
+          .catch((error) => console.error("error fetching user: ", error));
         console.log(userData);
         if (!userData.success) {
-  console.error("API error:", userData.error);
-  return;
+          console.error("API error:", userData.error);
+          return;
         }
 
         const folderId = await userData.data.folderId;
-        const docIds = await fetch(`/api/export-docIds?rootFolderId=${folderId}`)
-        .then((res) => res.json())
-        .catch((error) => console.error("error fetching document IDs: ", error));
-      const firstDoc = docIds[0];
+        const docIds = await fetch(
+          `/api/export-docIds?rootFolderId=${folderId}`
+        )
+          .then((res) => res.json())
+          .catch((error) =>
+            console.error("error fetching document IDs: ", error)
+          );
+        const firstDoc = docIds[0];
         setIds(docIds);
-        showDoc(firstDoc)
+        showDoc(firstDoc);
         setLoading(false);
-        await uploadDocs(docIds, user.uid)
-    })()
+        await uploadDocs(docIds, user.uid);
+      })();
     }
   }, [user]);
   if (!user) return <p>wait</p>;

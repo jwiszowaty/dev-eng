@@ -11,7 +11,7 @@ export async function GET(request) {
             );
         }
         const auth = new google.auth.GoogleAuth({
-            keyFile: process.env.SERVICE_FILE_PATH,
+            credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
             scopes: ["https://www.googleapis.com/auth/drive.readonly"],
         });
 
