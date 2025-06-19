@@ -10,8 +10,12 @@ export async function GET(request) {
                 { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
+        const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+  const parsed = JSON.parse(raw);
+  parsed.private_key = parsed.private_key.replace(/\\n/g, '\n');
+
         const auth = new google.auth.GoogleAuth({
-            credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
+            credentials: parsed,
             scopes: ["https://www.googleapis.com/auth/drive.readonly"],
         });
 
