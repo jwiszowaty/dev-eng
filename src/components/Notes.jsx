@@ -41,7 +41,7 @@ export default function Notes() {
             .then((res) => res.json())
             .catch((error) => console.error("error fetching user: ", error));
         console.log(userData);
-        if (userData.success) {
+        if (!userData.success) {
   console.error("API error:", userData.error);
   return;
         }
