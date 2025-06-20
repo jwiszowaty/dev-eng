@@ -1,5 +1,5 @@
 import { connectDB, Document } from "@/models/mongoDB";
-
+import { NextResponse } from "next/server";
 export async function GET(request) {
   try {
     const userId = request.nextUrl.searchParams.get("userId");
@@ -18,15 +18,12 @@ export async function GET(request) {
 
 
 export async function POST(request) {
-  try {
-    const { userId, documentId, name, html } = await request.json();;
-    await connectDB();
-    const newDoc = new Document({ userId, documentId, name, html })
-    const savedDoc = await newDoc.save();
-
-    return Response.json({ success: true, data: savedDoc }, { status: 201 })
+   try {
+    const body = await request.json();
+    const savedDoc = await Document.create(body);
+    return NextResponse.json(savedDoc, { status: 200 });
   } catch (error) {
-    console.error("Saving document failed: ", error);
-    return Response.json({ success: false, error: error.message }, { status: 500 })
+    console.error("Error saving document:", error);
+    return NextResponse.json({ error: "Failed to save" }, { status: 500 });
   }
 }

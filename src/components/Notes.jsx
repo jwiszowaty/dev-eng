@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
 import Note from "./Note";
 import { useAuth } from "@/contexts/AuthContext";
-import { uploadDocs } from "../../uploadDocs";
+import { uploadDocs } from "../app/api/uploadDocs";
+import useNetworkStatus from "@/app/hooks/useNetworkStatus";
 export default function Notes() {
+  const { isOnline } = useNetworkStatus();
   const [ids, setIds] = useState(null);
   const [docDisplayed, setDocDisplayed] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const { user } = useAuth();
-
-  async function showDoc(document) {
+  const { currentUser } = useAuth();
+  const [documents, setDocuments] = useState([]);
+  
+  async function showDoc({ documentId, name }) {
     setLoading(true);
     let doc;
-    const docId = document.id;
-    const name = document.name;
-    setDocDisplayed({ docId, name });
-    doc = await fetch(`/api/doc?userId=${user.uid}&documentId=${docId}`).then(
-      (res) => res.json()
-    );
-    if (doc.error == "Document not found") {
-      doc = await fetch(`/api/google-doc?documentId=${docId}`, {
+    const userId = currentUser.uid;
+    setDocDisplayed({ documentId, name });
+    doc = documents.find((document) => document.id == documentId);
+    if (!doc) {
+      doc = await fetch(`/api/google-doc?documentId=${documentId}`, {
         method: "GET",
       })
         .then((res) => res.json())
@@ -28,35 +27,33 @@ export default function Notes() {
         })
         .catch((error) => console.error("error document user: ", error));
       const document = {
-        userId: user.uid,
-        documentId: docId,
-        name: doc.name,
+        userId,
+        documentId,
+        name,
         html: doc.html,
       };
-      await fetch(`/api/doc`, {
-        method: "POST",
-        body: JSON.stringify(document),
-      });
+      setDocuments(...documents, document)
     }
-    setDocDisplayed({ docId, name, html: doc.data?.html ?? doc.html });
+    setDocDisplayed({ documentId, name, html: doc.data?.html ?? doc.html });
     setLoading(false);
   }
 
   useEffect(() => {
-    if (user?.uid) {
+    console.log("isOnline? ",isOnline);
+    
+    if (isOnline && currentUser?.uid) {
       (async function () {
-        const userData = await fetch(`/api/user?userId=${user.uid}`, {
+        const user = await fetch(`/api/user?userId=${currentUser.uid}`, {
           method: "GET",
         })
           .then((res) => res.json())
           .catch((error) => console.error("error fetching user: ", error));
-        console.log(userData);
-        if (!userData.success) {
-          console.error("API error:", userData.error);
+        if (!user?.success) {
+          console.error("API error:", user.error);
           return;
         }
-
-        const folderId = await userData.data.folderId;
+        setDocuments(user.data.documents)
+        const folderId = await user.data.folderId;
         const docIds = await fetch(
           `/api/export-docIds?rootFolderId=${folderId}`
         )
@@ -66,13 +63,14 @@ export default function Notes() {
           );
         const firstDoc = docIds[0];
         setIds(docIds);
-        showDoc(firstDoc);
+        showDoc({documentId: firstDoc.id, name: firstDoc.name});
         setLoading(false);
-        await uploadDocs(docIds, user.uid);
+        await uploadDocs(docIds, currentUser.uid, documents, setDocuments);
+        console.log(documents, "documents after uploadDocs");
       })();
     }
-  }, [user]);
-  if (!user) return <p>wait</p>;
+  }, [isOnline, currentUser]);
+  if (!currentUser) return <p>wait</p>;
   return (
     <div className="flex flex-col">
       <p>Notes</p>
@@ -81,7 +79,7 @@ export default function Notes() {
         <div className="flex flex-col w-2/6">
           {ids &&
             ids.map((doc) => (
-              <button key={doc.id} onClick={() => showDoc(doc)}>
+              <button key={doc.id} onClick={() => showDoc({documentId: doc.id, name: doc.name})}>
                 {doc.name}
               </button>
             ))}

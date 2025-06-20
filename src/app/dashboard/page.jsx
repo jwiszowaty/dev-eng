@@ -4,25 +4,30 @@ import NavBar from "../../components/NavBar";
 import Notes from "../../components/Notes";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import useNetworkStatus from "../hooks/useNetworkStatus";
+import NetworkOffline from "@/components/NetworkOffline";
 export default function Dashboard() {
+  const { isOnline } = useNetworkStatus();
   const router = useRouter();
   const [content, setContent] = useState(<Notes />);
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
   useEffect(() => {
-    if (!user?.uid) {
+    console.log("is Online? ", isOnline);
+    
+    if (!currentUser?.uid) {
       router.replace('/')
     }
-  }, [user])
-  if (!user?.uid) return null;
+  }, [currentUser])
+  if (!currentUser?.uid) return null;
   return (
     <>
-      <header className="flex gap-20">
-        <h1 className="text-xl font-bold text-[#4A4A4A]">
+      <header className="flex gap-20 h-15 bg-blue-100">
+        <h1 className="text-4xl font-bold text-[#4A4A4A] self-center">
           dev<span className="text-[#003B66]">Eng</span>
         </h1>
         <NavBar content={content} setContent={setContent} />
       </header>
-      <main>{content}</main>
+      <main>{isOnline ? content : <NetworkOffline/>}</main>
     </>
   );
 }

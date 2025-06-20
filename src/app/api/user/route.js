@@ -28,3 +28,21 @@ export async function POST(request) {
         return Response.json({ success: false, error: error.message }, { status: 500 })
     }
 }
+export async function PUT(request) {
+    try {
+        const { userId, documents } = await request.json();
+        await connectDB();
+        console.log("Updating user with userId:", userId, "and documents:", documents);
+        const updatedUser = await User.findOneAndUpdate(
+            { userId },
+            {  documents: documents },
+        );
+        if (!updatedUser) {
+            return Response.json({ success: false, error: "User not found" }, { status: 404 });
+        }
+        return Response.json({ success: true, data: updatedUser }, { status: 200 });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        return Response.json({ success: false, error: error.message }, { status: 500 });
+    }
+}

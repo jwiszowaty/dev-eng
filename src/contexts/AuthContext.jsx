@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const logout = () => {
@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
   };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser); // sets user to null if signed out
+      setCurrentUser(firebaseUser); // sets user to null if signed out
       setLoading(false);
     });
 
@@ -23,7 +23,7 @@ export default function AuthProvider({ children }) {
   }, []);
   return (
     <AuthContext.Provider
-      value={{ user, logout, loading, accessToken, setAccessToken }}
+      value={{ currentUser, logout, loading, accessToken, setAccessToken }}
     >
       {children}
     </AuthContext.Provider>

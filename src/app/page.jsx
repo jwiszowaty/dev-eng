@@ -5,13 +5,13 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { user, loading } = useAuth();
+  const { currentUser, loading } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if (!loading && user?.uid) {
+    if (!loading && currentUser?.uid) {
       router.replace("/dashboard");
     }
-  }, [loading, user]);
+  }, [loading, currentUser]);
   if (loading) return <p>wait</p>;
   return (
     <div className="flex items-center justify-center min-h-screen dark:bg-gray-900 px-4">
@@ -20,12 +20,12 @@ export default function Home() {
           Welcome to Dev<span className="text-[#003B66]">Eng</span>!
         </h1>
 
-        {!user && (
+        {!currentUser && (
           <div className="flex justify-center mt-6">
             <SignInWithGoogle />
           </div>
         )}
-        {user && <button type="button" className="..." disabled>
+        {currentUser && <button type="button" className="..." disabled>
   <svg className="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24">
     {/* <!-- ... --> */}
   </svg>
