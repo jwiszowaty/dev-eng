@@ -31,6 +31,7 @@ export async function POST(request) {
 export async function PUT(request) {
     try {
         const { userId, documents } = await request.json();
+        console.log("Updating user with userId:", userId, "and documents:", documents);
         await connectDB();
         console.log("Updating user with userId:", userId, "and documents:", documents);
         const updatedUser = await User.findOneAndUpdate(

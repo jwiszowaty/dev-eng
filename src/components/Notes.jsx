@@ -16,7 +16,7 @@ export default function Notes() {
     let doc;
     const userId = currentUser.uid;
     setDocDisplayed({ documentId, name });
-    doc = documents.find((document) => document.id == documentId);
+    doc = document.length > 0 ? documents.find((document) => document.id == documentId) : undefined;
     if (!doc) {
       doc = await fetch(`/api/google-doc?documentId=${documentId}`, {
         method: "GET",
@@ -32,14 +32,14 @@ export default function Notes() {
         name,
         html: doc.html,
       };
-      setDocuments(...documents, document)
+      setDocuments(prevDocs => Array.isArray(prevDocs) ? [...prevDocs, document] : [document])
+
     }
     setDocDisplayed({ documentId, name, html: doc.data?.html ?? doc.html });
     setLoading(false);
   }
 
   useEffect(() => {
-    console.log("isOnline? ",isOnline);
     
     if (isOnline && currentUser?.uid) {
       (async function () {
@@ -65,8 +65,7 @@ export default function Notes() {
         setIds(docIds);
         showDoc({documentId: firstDoc.id, name: firstDoc.name});
         setLoading(false);
-        await uploadDocs(docIds, currentUser.uid, documents, setDocuments);
-        console.log(documents, "documents after uploadDocs");
+        await uploadDocs(docIds, currentUser.uid, user.data.documents, setDocuments);
       })();
     }
   }, [isOnline, currentUser]);
