@@ -16,7 +16,9 @@ export default function Notes() {
     let doc;
     const userId = currentUser.uid;
     setDocDisplayed({ documentId, name });
-    doc = document.length > 0 ? documents.find((document) => document.id == documentId) : undefined;
+    console.log(documents);
+    
+    doc = documents.length > 0 ? documents.find((document) => document.documentId == documentId) : undefined;
     if (!doc) {
       doc = await fetch(`/api/google-doc?documentId=${documentId}`, {
         method: "GET",

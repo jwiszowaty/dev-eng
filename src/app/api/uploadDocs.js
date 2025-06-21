@@ -1,6 +1,4 @@
 export async function uploadDocs(docIds, userId, documents, setDocuments) {
-    console.log(documents, "documents in uploadDocs");
-
     const documentsToUpdate = [...documents];
     let newDocsAdded = false;
     await Promise.all(
