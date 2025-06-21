@@ -10,15 +10,18 @@ export default function Notes() {
   const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth();
   const [documents, setDocuments] = useState([]);
-  
+
   async function showDoc({ documentId, name }) {
     setLoading(true);
     let doc;
     const userId = currentUser.uid;
     setDocDisplayed({ documentId, name });
     console.log(documents);
-    
-    doc = documents.length > 0 ? documents.find((document) => document.documentId == documentId) : undefined;
+
+    doc =
+      documents.length > 0
+        ? documents.find((document) => document.documentId == documentId)
+        : undefined;
     if (!doc) {
       doc = await fetch(`/api/google-doc?documentId=${documentId}`, {
         method: "GET",
@@ -34,15 +37,15 @@ export default function Notes() {
         name,
         html: doc.html,
       };
-      setDocuments(prevDocs => Array.isArray(prevDocs) ? [...prevDocs, document] : [document])
-
+      setDocuments((prevDocs) =>
+        Array.isArray(prevDocs) ? [...prevDocs, document] : [document]
+      );
     }
     setDocDisplayed({ documentId, name, html: doc.data?.html ?? doc.html });
     setLoading(false);
   }
 
   useEffect(() => {
-    
     if (isOnline && currentUser?.uid) {
       (async function () {
         const user = await fetch(`/api/user?userId=${currentUser.uid}`, {
@@ -54,7 +57,7 @@ export default function Notes() {
           console.error("API error:", user.error);
           return;
         }
-        setDocuments(user.data.documents)
+        setDocuments(user.data.documents);
         const folderId = await user.data.folderId;
         const docIds = await fetch(
           `/api/export-docIds?rootFolderId=${folderId}`
@@ -65,9 +68,40 @@ export default function Notes() {
           );
         const firstDoc = docIds[0];
         setIds(docIds);
-        showDoc({documentId: firstDoc.id, name: firstDoc.name});
+        let doc;
+        const userId = currentUser.uid;
+        setDocDisplayed({ documentId: firstDoc.id, name: firstDoc.name});
+        doc =
+          user.data.documents.length > 0
+            ? user.data.documents.find((document) => document.documentId == firstDoc.id)
+            : undefined;
+        if (!doc) {
+          doc = await fetch(`/api/google-doc?documentId=${firstDoc.id}`, {
+            method: "GET",
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              return data;
+            })
+            .catch((error) => console.error("error document user: ", error));
+          const document = {
+            userId,
+            documentId: firstDoc.id,
+            name: firstDoc.name,
+            html: doc.html,
+          };
+          setDocuments((prevDocs) =>
+            Array.isArray(prevDocs) ? [...prevDocs, document] : [document]
+          );
+        }
+        setDocDisplayed({ documentId: firstDoc.id, name: firstDoc.name, html: doc.data?.html ?? doc.html });
         setLoading(false);
-        await uploadDocs(docIds, currentUser.uid, user.data.documents, setDocuments);
+        await uploadDocs(
+          docIds,
+          currentUser.uid,
+          user.data.documents,
+          setDocuments
+        );
       })();
     }
   }, [isOnline, currentUser]);
@@ -80,7 +114,10 @@ export default function Notes() {
         <div className="flex flex-col w-2/6">
           {ids &&
             ids.map((doc) => (
-              <button key={doc.id} onClick={() => showDoc({documentId: doc.id, name: doc.name})}>
+              <button
+                key={doc.id}
+                onClick={() => showDoc({ documentId: doc.id, name: doc.name })}
+              >
                 {doc.name}
               </button>
             ))}
