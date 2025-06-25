@@ -5,7 +5,6 @@ import { useState } from "react"
 export default function createUser() {
     const { currentUser } = useAuth();
     const [newUser, setNewUser] = useState();
-    console.log(currentUser.displayName);
     useEffect(() => {
   if (currentUser?.displayName) {
     console.log(currentUser?.displayName);
