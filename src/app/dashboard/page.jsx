@@ -6,10 +6,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import useNetworkStatus from "../hooks/useNetworkStatus";
 import NetworkOffline from "@/components/NetworkOffline";
+import KnowledgeHub from "@/components/KnowledgeHub";
 export default function Dashboard() {
   const { isOnline } = useNetworkStatus();
   const router = useRouter();
-  const [content, setContent] = useState(<Notes />);
+  const [content, setContent] = useState(<KnowledgeHub/>);
   const { currentUser } = useAuth();
   useEffect(() => {
     console.log("is Online? ", isOnline);

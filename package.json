@@ -11,6 +11,7 @@
     "test": "vitest --mode test"
   },
   "dependencies": {
+    "@google-cloud/translate": "^9.1.0",
     "@tailwindcss/typography": "^0.5.16",
     "firebase": "^11.8.1",
     "google-auth-library": "^10.1.0",
