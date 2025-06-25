@@ -1,6 +1,6 @@
 "use client"
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function createUser() {
     const { currentUser } = useAuth();
