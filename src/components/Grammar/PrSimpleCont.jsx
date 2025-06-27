@@ -1,18 +1,5 @@
-import {dictionary} from '../../dictionary.js'
+import Word from '../Word.jsx';
 export default function PrSimpleCont() {
-    const Word = ({ children }) => {
-      let word = children.toLowerCase().replaceAll(/"|\.|!|\?|\)|\(|,/g, "")
-      word = word.replace("’", "'")
-    return (
-      <span className="relative group cursor-help inline-block">
-        {children}
-        <span className="absolute hidden group-hover:block text-white bg-gray-800 text-xs rounded px-2 py-1 bottom-full left-1/2 transform -translate-x-1/2 mb-1 whitespace-nowrap z-10">
-         {dictionary[word] ?? word}
-        </span>
-      </span>
-    );
-  };
-
   const wrapText = (text) =>
     text
       .split(/(\s+)/)
@@ -27,14 +14,15 @@ export default function PrSimpleCont() {
           "Present Simple vs Present Continuous – What’s the Difference?"
         )}
       </div>
-
       <div className="mb-4">
         {wrapText(
           "Hi! Let’s take a closer look at two very common English tenses: Present Simple and Present Continuous. As a Polish learner, it’s normal if you sometimes mix them up — English uses two tenses where Polish often uses just one. But don’t worry — I’ll explain everything clearly, with examples and reasons why."
         )}
       </div>
-
-      <div className="text-2xl font-semibold text-green-900 mt-8 mb-4">
+      <div className="flex">
+        <img className="overflow-clip h-50 mb-4" src="present.jpg" alt="clock on a bench in a park"/>
+<div className="flex  flex-col ml-4">
+      <div className="text-2xl font-semibold text-green-900 mb-4">
         {wrapText("✅ When do you use the Present Simple?")}
       </div>
       <div className="mb-2">{wrapText("Use it to describe things that are:")}</div>
@@ -44,8 +32,9 @@ export default function PrSimpleCont() {
         <li>{wrapText("Facts")}</li>
         <li>{wrapText("Permanent")}</li>
         <li>{wrapText("Not changing quickly")}</li>
-      </ul>
-
+          </ul>
+          </div>
+</div>
       <div className="text-xl font-semibold text-green-500 mb-2">
         {wrapText("💡 Examples with explanations:")}
       </div>

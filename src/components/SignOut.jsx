@@ -10,7 +10,7 @@ export default function SignOut() {
   },[currentUser])
   return (
     <button
-      className="bg-blue-900 px-2.5 text-white"
+      className={(currentUser?.uid ? "bg-red-900 px-2.5 text-white" : "bg-green-900 px-2.5 text-white").concat(" w-30")}
       onClick={() => {
         if (currentUser) {
           logout();

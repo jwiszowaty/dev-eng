@@ -11,7 +11,6 @@ export default function AuthProvider({ children }) {
   const router = useRouter();
   const logout = () => {
     signOut(auth);
-    router.replace("/");
   };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
