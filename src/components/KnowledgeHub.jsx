@@ -76,13 +76,14 @@ export default function KnowledgeHub() {
             <p className={subCategoriesCSS} onClick={() => handleClick("ReportedSpeech")}>Reported Speech</p>
           </div>
           <button
-            className="flex justify-between w-1/1 rounded-2xl px-3 bg-blue-100 mb-3"
+            disabled
+            className="flex justify-between w-1/1 rounded-2xl px-3 bg-gray-200 text-gray-400 mb-3"
             onClick={() => {
               setCollapsible(collapsible == "vocabulary" ? null : "vocabulary");
             }}
           >
             Vocabulary
-            {collapsible == "grammar" ? <p>▼</p> : <p>◄</p>}
+            {/* {collapsible == "grammar" ? <p>▼</p> : <p>◄</p>} */}
           </button>
           <div
             className={
@@ -92,19 +93,19 @@ export default function KnowledgeHub() {
             <p>Hi vocab</p>
           </div>
           <button
-            className="flex justify-between w-1/1 rounded-2xl px-3 bg-blue-100 mb-3"
+            className="flex justify-between w-1/1 rounded-2xl px-3  bg-gray-200 text-gray-400  mb-3"
             disabled
           >
             Pronunciation
           </button>
           <button
-            className="flex justify-between w-1/1 rounded-2xl px-3 bg-blue-100 mb-3"
+            className="flex justify-between w-1/1 rounded-2xl px-3  bg-gray-200 text-gray-400  mb-3"
             disabled
           >
             Writing
           </button>
           <button
-            className="flex justify-between w-1/1 rounded-2xl px-3 bg-blue-100 mb-3"
+            className="flex justify-between w-1/1 rounded-2xl px-3  bg-gray-200 text-gray-400  mb-3"
             disabled
           >
             Speaking

@@ -1,9 +1,10 @@
 import { dictionary } from "@/dictionary";
 const vocab = []
 export default function Word({children }) {
-  let word = children.toLowerCase().replaceAll(/"|\.|!|\?|\)|\(|,|:|^\W*'|'\W*$|—/g, "");
+  let word = children.toLowerCase().replaceAll(/"|\.|!|\?|\)|\(|,|:|^\W*'|'\W*$|—|”|“/g, "");
   word = word.replace("’", "'");
-  
+  if (!dictionary.hasOwnProperty(word) && !vocab.includes(word)) vocab.push(word);
+  if (vocab.length > 0) console.log(vocab);
   
   return (
     <span className="relative group cursor-help inline-block">
