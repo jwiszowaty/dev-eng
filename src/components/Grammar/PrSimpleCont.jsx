@@ -278,6 +278,24 @@ export default function PrSimpleCont() {
           </span>
         </li>
       </ul>
+      <div className="text-2xl font-semibold text-green-900 mt-10 mb-4">
+        {wrapText("📝 Test Your Knowledge")}
+      </div>
+      <div>
+        <div className='font-semibold'>Complete the sentences with correct words in gaps.</div>
+        <ol className='flex flex-col *:list-decimal list-inside mt-4 mb-10 gap-y-2'>
+          <li>She <input className='bg-gray-200 rounded border-1 border-gray-400'/> (go) to school every morning.</li>
+          <li>They <input className='bg-gray-200 rounded border-1 border-gray-400'/> (not like) spicy food.</li>
+          <li><input className='bg-gray-200 rounded border-1 border-gray-400'/> he <input className='bg-gray-200 rounded border-1 border-gray-400'/> (work) in an office?</li>
+          <li>My brother <input className='bg-gray-200 rounded border-1 border-gray-400'/> (play) football on weekends.</li>
+          <li>The sun <input className='bg-gray-200 rounded border-1 border-gray-400'/> (rise) in the east.</li>
+          <li>We <input className='bg-gray-200 rounded border-1 border-gray-400'/> (not watch) TV in the evening.</li>
+          <li><input className='bg-gray-200 rounded border-1 border-gray-400'/> your parents <input className='bg-gray-200 rounded border-1 border-gray-400'/> (live) in this city?</li>
+          <li>Cats <input className='bg-gray-200 rounded border-1 border-gray-400'/> (sleep) for many hours a day.</li>
+          <li>He <input className='bg-gray-200 rounded border-1 border-gray-400'/> (wash) his car every Sunday.</li>
+          <li>She <input className='bg-gray-200 rounded border-1 border-gray-400'/> (not speak) French very well.</li>
+        </ol>
+      </div>
     </div>
   );
 }

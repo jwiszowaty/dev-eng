@@ -11,6 +11,7 @@ import Conditionals from "./Grammar/Conditionals";
 import FutureForms from "./Grammar/FutureForms";
 import PassiveVoice from "./Grammar/PassiveVoice";
 import ReportedSpeech from "./Grammar/ReportedSpeech";
+import PracticeDialog from "./Writing/PracticeDialog";
 const articles = {
   PresentSimplePresentContinuous: <PrSimpleCont />,
   PastSimplePastContinuous: <PastSimpleCont />,
@@ -22,9 +23,11 @@ const articles = {
   FutureForms: <FutureForms />,
   PassiveVoice: <PassiveVoice />,
   ReportedSpeech: <ReportedSpeech />,
+  PracticeDialog: <PracticeDialog />,
 };
 
-const subCategoriesCSS = "px-4 py-2 hover:underline text-blue-800 text-sm font-medium transition"
+const subCategoriesCSS =
+  "px-4 py-2 hover:underline text-blue-800 text-sm font-medium transition";
 export default function KnowledgeHub() {
   const router = useRouter();
   const pathname = usePathname();
@@ -61,19 +64,66 @@ export default function KnowledgeHub() {
               collapsible == "grammar" ? "visible mb-3 pl-3" : "hidden"
             }
           >
-            <p className={subCategoriesCSS}
-              onClick={() => handleClick("PartsOfSpeech")}>Parts of Speech</p>
-            <p className={subCategoriesCSS} onClick={() => handleClick("SentenceStructure")}>Sentence Structure</p>
-            <p className={subCategoriesCSS} onClick={() => handleClick("EnglishArticles")}>Articles</p>
-            <p className={subCategoriesCSS} onClick={() => handleClick("PresentSimplePresentContinuous")}>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("PartsOfSpeech")}
+            >
+              Parts of Speech
+            </p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("SentenceStructure")}
+            >
+              Sentence Structure
+            </p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("EnglishArticles")}
+            >
+              Articles
+            </p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("PresentSimplePresentContinuous")}
+            >
               Present Simple vs. Present Continuous
             </p>
-            <p className={subCategoriesCSS} onClick={() => handleClick("PastSimplePastContinuous")}>Past Simple vs. Past Continuous</p>
-            <p className={subCategoriesCSS} onClick={() => handleClick("PresentPerfectPastSimple")}>Present Perfect vs. Past Simple</p>
-            <p className={subCategoriesCSS} onClick={() => handleClick("FutureForms")}>Future forms</p>
-            <p className={subCategoriesCSS} onClick={() => handleClick("Conditionals")}>Conditionals</p>
-            <p className={subCategoriesCSS} onClick={() => handleClick("PassiveVoice")}>Passive Voice</p>
-            <p className={subCategoriesCSS} onClick={() => handleClick("ReportedSpeech")}>Reported Speech</p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("PastSimplePastContinuous")}
+            >
+              Past Simple vs. Past Continuous
+            </p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("PresentPerfectPastSimple")}
+            >
+              Present Perfect vs. Past Simple
+            </p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("FutureForms")}
+            >
+              Future forms
+            </p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("Conditionals")}
+            >
+              Conditionals
+            </p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("PassiveVoice")}
+            >
+              Passive Voice
+            </p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("ReportedSpeech")}
+            >
+              Reported Speech
+            </p>
           </div>
           <button
             disabled
@@ -99,11 +149,26 @@ export default function KnowledgeHub() {
             Pronunciation
           </button>
           <button
-            className="flex justify-between w-1/1 rounded-2xl px-3  bg-gray-200 text-gray-400  mb-3"
-            disabled
+            onClick={() => {
+              setCollapsible(collapsible == "writing" ? null : "writing");
+            }}
+            className="flex justify-between w-1/1 rounded-2xl px-3 bg-blue-100 mb-3"
           >
             Writing
+            {collapsible == "writing" ? <p>▼</p> : <p>◄</p>}
           </button>
+          <div
+            className={
+              collapsible == "writing" ? "visible mb-3 pl-3" : "hidden"
+            }
+          >
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("PracticeDialog")}
+            >
+              Practice Dialog
+            </p>
+          </div>
           <button
             className="flex justify-between w-1/1 rounded-2xl px-3  bg-gray-200 text-gray-400  mb-3"
             disabled

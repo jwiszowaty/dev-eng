@@ -12,10 +12,12 @@
   },
   "dependencies": {
     "@google-cloud/translate": "^9.1.0",
+    "@google/genai": "^1.7.0",
     "@tailwindcss/typography": "^0.5.16",
     "firebase": "^11.8.1",
     "google-auth-library": "^10.1.0",
     "googleapis": "^149.0.0",
+    "marked": "^16.0.0",
     "mongodb": "^6.17.0",
     "mongoose": "^8.15.1",
     "net": "^1.0.2",
