@@ -1,5 +1,35 @@
 export async function POST(request) {
-  const { history, message, systemInstruction } = await request.json();
+  const { history, systemInstruction } = await request.json();
+  const tools = [
+    {
+      type: "function",
+      function: {
+        name: "airport_response",
+        description: "Simulates an in-character airport employee named Mery who responds to the user's message with a task and essential info for English practice.",
+        parameters: {
+          type: "object",
+          properties: {
+            response: {
+              type: "string",
+              description: "Mery's short, realistic airport employee response in English (under 35 words)."
+            },
+            task: {
+              type: "string",
+              description: "A specific instruction in Polish for the student to respond to the prompt."
+            },
+            essentialInfo: {
+              type: "object",
+              description: "Relevant fictional info the student needs to use in their answer.",
+              additionalProperties: {
+                type: "string"
+              }
+            }
+          },
+          required: ["response", "task", "essentialInfo"]
+        }
+      }
+    }
+  ];
 
   const messages = [
     { role: "system", content: systemInstruction || "You are a helpful assistant." },
@@ -19,20 +49,24 @@ export async function POST(request) {
       body: JSON.stringify({
         model: "gpt-4o", // or "gpt-3.5-turbo"
         messages,
-        temperature: 0.9,
-      })
+        temperature: 1.0,
+      }),
+      tools,
+      tool_choice: {
+        type: "function",
+        function: { name: "airport_response" }
+      }
     });
 
     const data = await response.json();
     let reply = data.choices[0]?.message?.content || "I didn't understand that.";
-      console.log(reply);
-      let parsedResponse;
-reply = reply.replace(/```json|\n|```|\\/g,'')
-      try {
-          parsedResponse = JSON.parse(reply);
-      } catch {
-          parsedResponse = { response: reply, task: "" };
-      }
+    // reply = reply.replace(/```json\n|\n|```/g, '').replace(/"/g, "'"); // Clean up the reply to ensure it's valid JSON
+    let parsedResponse;
+    try {
+      parsedResponse = JSON.parse(reply);
+    } catch {
+      parsedResponse = { response: reply, task: "", essentialInfo: {} };
+    }
     return Response.json({ success: true, data: parsedResponse }, { status: 200 });
   } catch (err) {
     console.error("API Route Error:", err);

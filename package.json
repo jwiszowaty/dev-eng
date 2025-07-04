@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest --mode test"
+    "test": "vitest --mode test",
+    "test:one": "vitest run"
   },
   "dependencies": {
     "@google-cloud/translate": "^9.1.0",
