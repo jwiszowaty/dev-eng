@@ -1,3 +1,5 @@
+import scenarios from "./Writing/scenarios";
+
 export async function sendMessage(messageToSend, history, setHistory, systemInstruction, setTask, situation, setData) {
   const newMessage = {
     role: "user",
@@ -24,7 +26,7 @@ export async function sendMessage(messageToSend, history, setHistory, systemInst
 
       const data = await response.json();
       console.log(data);
-      
+
       const replyText = data?.data?.response ?? "data.data";
 
       setHistory((prev) => [
@@ -70,7 +72,7 @@ export async function sendMessage(messageToSend, history, setHistory, systemInst
       console.log(data.data);
 
 
-      const replyText = data?.data.response ?? "Sorry, no response.";
+      const replyText = data?.data.response ?? data?.data ?? "Sorry, I didn't catch that.";
 
       setHistory((prev) => [
         ...prev,
@@ -93,5 +95,37 @@ export async function sendMessage(messageToSend, history, setHistory, systemInst
         },
       ]);
     }
+  }
+}
+export async function sendEssay(essay, setFeedback) {
+  const body = {
+    data: essay,
+    systemInstruction: scenarios.essay2.systemInstruction,
+  }
+  try {
+    setFeedback("loading")
+    const response = await fetch("/api/essay", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+
+    
+
+    const data = await response.json();
+    console.log(data);
+
+    const replyText = data?.data?.html ?? data?.data ?? "Try again";
+
+    setFeedback(replyText)
+  } catch (error) {
+    console.error("Error fetching AI response:", error);
   }
 }

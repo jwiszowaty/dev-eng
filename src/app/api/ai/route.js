@@ -1,5 +1,5 @@
 export async function POST(request) {
-  const { history, systemInstruction } = await request.json();
+  const { history = null, systemInstruction, data = null} = await request.json();
   const tools = [
     {
       type: "function",
@@ -28,19 +28,59 @@ export async function POST(request) {
           required: ["response", "task", "essentialInfo"]
         }
       }
+    },
+    {
+      type: "function",
+      function: {
+        name: "check_essay",
+        description: "Analyzes an English essay and returns structured feedback on grammar, coherence, vocabulary, and suggestions for improvement.",
+        parameters: {
+          type: "object",
+          properties: {
+            grammar: {
+              type: "string",
+              description: "Feedback on grammar issues found in the essay."
+            },
+            coherence: {
+              type: "string",
+              description: "Feedback on how logically structured and coherent the essay is."
+            },
+            vocabulary: {
+              type: "string",
+              description: "Evaluation of vocabulary use and appropriateness."
+            },
+            suggestions: {
+              type: "string",
+              description: "Specific suggestions for improvement."
+            },
+            score: {
+              type: "number",
+              description: "Overall score from 1 to 10 based on quality and correctness."
+            }
+          },
+          required: ["grammar", "coherence", "vocabulary", "suggestions", "score"]
+        }
+      }
     }
   ];
-
-  const messages = [
-    { role: "system", content: systemInstruction || "You are a helpful assistant." },
-    ...history.map(msg => ({
-      role: msg.role,
-      content: msg.parts[0].text
-    }))
-  ];
+  let messages;
+  if (history) {
+    messages = [
+      { role: "system", content: systemInstruction || "You are a helpful assistant." },
+      ...history.map(msg => ({
+        role: msg.role,
+        content: msg.parts[0].text
+      }))
+    ];
+  } else {
+    messages = data;
+  }
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 600000);
 
   try {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      signal: controller.signal,
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -52,20 +92,29 @@ export async function POST(request) {
         temperature: 1.0,
       }),
       tools,
-      tool_choice: {
-        type: "function",
-        function: { name: "airport_response" }
-      }
+      tool_choice: "auto",
     });
 
+    clearTimeout(timeout);
+    
     const data = await response.json();
+    console.log(data);
+    
     let reply = data.choices[0]?.message?.content || "I didn't understand that.";
     // reply = reply.replace(/```json\n|\n|```/g, '').replace(/"/g, "'"); // Clean up the reply to ensure it's valid JSON
     let parsedResponse;
+    console.log(JSON.stringify(reply));
+
+
     try {
       parsedResponse = JSON.parse(reply);
     } catch {
-      parsedResponse = { response: reply, task: "", essentialInfo: {} };
+      try {
+        reply.replaceAll('"', "'")
+        parsedResponse = JSON.parse(reply);
+      } catch {
+        parsedResponse = reply;
+      }
     }
     return Response.json({ success: true, data: parsedResponse }, { status: 200 });
   } catch (err) {
@@ -76,31 +125,3 @@ export async function POST(request) {
     );
   }
 }
-
-// export async function POST(request) {
-//     try {
-//         const body = await request.json();
-//         const { history, message, systemInstruction } = body;
-//         const ai = new GoogleGenAI({});
-//         const config = {
-//             maxOutputTokens: 100,
-//             temperature: 0.5,
-//             topP: 0.7,
-//             systemInstruction,
-//         };
-//         const chat = ai.chats.create({
-//             model: "gemini-1.5-pro-latest",
-//             contents: history,
-//             config,
-//         });
-
-//         const response = await chat.sendMessage({ message });
-//         const parsedResponse = JSON.parse(response.text);
-//         console.log("parsedResponse: ", parsedResponse);
-
-//         return Response.json({ success: true, data: parsedResponse }, { status: 200 });
-//     } catch (error) {
-//         console.error("error: ", error);
-//         return Response.json({ success: false, error: error.message });
-//     }
-// }

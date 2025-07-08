@@ -12,6 +12,7 @@ import FutureForms from "./Grammar/FutureForms";
 import PassiveVoice from "./Grammar/PassiveVoice";
 import ReportedSpeech from "./Grammar/ReportedSpeech";
 import PracticeDialog from "./Writing/PracticeDialog";
+import CheckEssay from "./Writing/CheckEssay";
 const articles = {
   PresentSimplePresentContinuous: <PrSimpleCont />,
   PastSimplePastContinuous: <PastSimpleCont />,
@@ -24,6 +25,7 @@ const articles = {
   PassiveVoice: <PassiveVoice />,
   ReportedSpeech: <ReportedSpeech />,
   PracticeDialog: <PracticeDialog />,
+  CheckEssay: <CheckEssay />,
 };
 
 const subCategoriesCSS =
@@ -167,6 +169,12 @@ export default function KnowledgeHub() {
               onClick={() => handleClick("PracticeDialog")}
             >
               Practice Dialog
+            </p>
+            <p
+              className={subCategoriesCSS}
+              onClick={() => handleClick("CheckEssay")}
+            >
+              Submit your essay
             </p>
           </div>
           <button

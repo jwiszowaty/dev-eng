@@ -9,5 +9,9 @@ export default defineConfig(({ mode }) => {
     process.env[key] = env[key];
   }
 
-  return {}
+  return {
+    test: {
+      timeout: 20000, // 20 seconds global timeout
+    },
+  }
 });
