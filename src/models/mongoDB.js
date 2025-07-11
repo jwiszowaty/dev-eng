@@ -12,9 +12,15 @@ const userSchema = new Schema({
     folderId: String,
     documents: { type: [documentSchema], required: true },
 }, { collection: "users" })
+const issueSchema = new Schema({
+    userEmail: { type: String, required: true },
+    issueMessage: { type: String, required: true },
+    status: {type: String, required: true},
+}, { collection: "issue" })
 
 const User = mongoose.models.User ?? mongoose.model("User", userSchema);
 const Document = mongoose.models.Document ?? mongoose.model("Document", documentSchema);
+const Issue = mongoose.models.Issue ?? mongoose.model("Issue", issueSchema)
 
 const connectDB = async (attempts = 0) => {
     try {
@@ -34,4 +40,4 @@ const connectDB = async (attempts = 0) => {
         }, 9000)
     }
 }
-export { User, Document, connectDB }
+export { User, Document, Issue, connectDB }

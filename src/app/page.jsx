@@ -7,6 +7,7 @@ import SignOut from "@/components/SignOut";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import NavBar from "@/components/NavBar";
+import Report from "@/components/Report";
 export default function Dashboard() {
   const {currentUser } = useAuth()
   const { isOnline } = useNetworkStatus();
@@ -19,7 +20,10 @@ export default function Dashboard() {
         </h1>
         <NavBar content={content} setContent={setContent}/>
       </header>
-      <main>{isOnline ? content : <NetworkOffline/>}</main>
+      <main>
+        {isOnline ? content : <NetworkOffline />}
+        <Report/>
+      </main>
     </>
   );
 }
