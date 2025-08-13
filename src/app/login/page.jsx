@@ -9,7 +9,7 @@ export default function Home() {
   const router = useRouter();
   useEffect(() => {
     if (!loading && currentUser?.uid) {
-      router.back();
+      router.push("/");
     }
   }, [loading, currentUser]);
   if (loading) return <p>wait</p>;

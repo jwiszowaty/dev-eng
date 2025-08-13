@@ -97,13 +97,12 @@ export async function sendMessage(messageToSend, history, setHistory, systemInst
     }
   }
 }
-export async function sendEssay(essay, setFeedback) {
+export async function sendEssay(essay) {
   const body = {
     data: essay,
     systemInstruction: scenarios.essay2.systemInstruction,
   }
   try {
-    setFeedback("loading")
     const response = await fetch("/api/essay", {
       method: "POST",
       headers: {
@@ -116,16 +115,27 @@ export async function sendEssay(essay, setFeedback) {
       throw new Error("Network response was not ok");
     }
 
-
-    
-
     const data = await response.json();
-    console.log(data);
 
     const replyText = data?.data?.html ?? data?.data ?? "Try again";
 
-    setFeedback(replyText)
+    return replyText;
   } catch (error) {
     console.error("Error fetching AI response:", error);
+  }
+}
+export async function uploadEssay(userId, text, aiFeedback) {
+  try {
+    const feedback = "Personal feedback will be available soon.";
+    const body = { userId, text, aiFeedback, feedback }
+    await fetch("/api/essay-db", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+  } catch (error) {
+    console.error("Error uploading essay:", error);
   }
 }

@@ -16,11 +16,27 @@ const issueSchema = new Schema({
     userEmail: { type: String, required: true },
     issueMessage: { type: String, required: true },
     status: {type: String, required: true},
-}, { collection: "issue" })
+}, { collection: "issues" })
+const essaySchema = new Schema({
+    userId: { type: String, required: true },
+    text: { type: String, required: true },
+    aiFeedback: { type: String, required: true },
+    feedback: {type: String, required: true},
+}, { collection: "essays" })
+const vocabularySchema = new Schema({
+    userId: { type: String, required: true },
+    english: { type: String, required: true },
+    polish: { type: String, required: true },
+    englishExample: String,
+    polishExample: String,
+    difficulty: { type: Number, required: true },
+}, { collection: "vocabulary"})
 
 const User = mongoose.models.User ?? mongoose.model("User", userSchema);
 const Document = mongoose.models.Document ?? mongoose.model("Document", documentSchema);
-const Issue = mongoose.models.Issue ?? mongoose.model("Issue", issueSchema)
+const Issue = mongoose.models.Issue ?? mongoose.model("Issue", issueSchema);
+const Essay = mongoose.models.Essay ?? mongoose.model("Essay", essaySchema);
+const Vocabulary = mongoose.models.Vocabulary ?? mongoose.model("Vocabulary", vocabularySchema);
 
 const connectDB = async (attempts = 0) => {
     try {
@@ -40,4 +56,6 @@ const connectDB = async (attempts = 0) => {
         }, 9000)
     }
 }
-export { User, Document, Issue, connectDB }
+export {
+    User, Document, Issue, Essay, Vocabulary, connectDB
+}

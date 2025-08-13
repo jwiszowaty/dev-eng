@@ -19,24 +19,6 @@ export async function POST(request) {
       }
     }
   },
-    // {
-    //   type: "function",
-    //   function: {
-    //     name: "check_essay",
-    //     description: "Analyzes an English essay and returns structured feedback on grammar, coherence, vocabulary, and suggestions for improvement.",
-    //     parameters: {
-    //       type: "object",
-    //       properties: {
-    //         grammar: { type: "string", description: "Feedback on grammar issues." },
-    //         coherence: { type: "string", description: "Structure and coherence feedback." },
-    //         vocabulary: { type: "string", description: "Evaluation of vocabulary use." },
-    //         suggestions: { type: "string", description: "Suggestions for improvement based on sentences/vocabulary from the essay." },
-    //         score: { type: "number", description: "Overall score from 1 to 10." }
-    //       },
-    //       required: ["grammar", "coherence", "vocabulary", "suggestions", "score"]
-    //     }
-    //   }
-    // }
   ];
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 600000);

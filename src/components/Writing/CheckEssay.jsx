@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { sendEssay } from "../funcs";
-import { marked } from "marked";
 import DOMPurify from "dompurify";
 
 export default function CheckEssay() {
@@ -51,53 +50,7 @@ export default function CheckEssay() {
         </div>
       )}
       {feedback !== "loading" && feedback !== null && (
-        // <div className="flex flex-col">
-        //   <div className="flex flex-col">
-        //     <p>grammar</p>
-        //     <div
-        //       dangerouslySetInnerHTML={{
-        //         __html: DOMPurify.sanitize(marked.parse(feedback.grammar)),
-        //         // __html: feedback.grammar,
-        //       }}
-        //     />
-        //   </div>
-        //   <div className="flex flex-col">
-        //     <p>coherence</p>
-        //     <div
-        //       dangerouslySetInnerHTML={{
-        //         __html: DOMPurify.sanitize(marked.parse(feedback.coherence)),
-        //         //  __html: feedback.coherence,
-
-        //       }}
-        //     />
-        //   </div>
-        //   <div className="flex flex-col">
-        //     <p>vocabulary</p>
-        //     <div
-        //       dangerouslySetInnerHTML={{
-        //         __html: DOMPurify.sanitize(marked.parse(feedback.vocabulary)),
-        //         //  __html: feedback.vocabulary,
-        //       }}
-        //     />
-        //   </div>
-        //   <div className="flex flex-col">
-        //     <p>suggestions</p>
-        //     <div
-        //       dangerouslySetInnerHTML={{
-        //         __html: DOMPurify.sanitize(marked.parse(feedback.suggestions)),
-        //         //  __html: feedback.suggestions,
-        //       }}
-        //     />
-        //   </div>
-        //   <div className="flex">
-        //     <p>score: </p>
-        //     <div
-        //       dangerouslySetInnerHTML={{
-        //          __html: feedback.score.toString(),
-        //       }}
-        //     />
-        //   </div>
-        // </div>
+       
         <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(feedback)}}>
 
         </div>

@@ -1,10 +1,13 @@
+"use client";
 import { useEffect, useState } from "react";
-import Note from "./Note";
+import Note from "@/components/Note.jsx";
 import { useAuth } from "@/contexts/AuthContext";
-import { uploadDocs } from "../app/api/uploadDocs";
+import { uploadDocs } from "@/app/api/uploadDocs";
 import useNetworkStatus from "@/app/hooks/useNetworkStatus";
 import { useRouter } from "next/navigation";
-import FunFacts from "./FunFacts";
+import FunFacts from "@/components/FunFacts";
+import NavBar from "@/components/NavBar";
+import Link from "next/link";
 export default function Notes() {
   const router = useRouter();
   const { isOnline } = useNetworkStatus();
@@ -130,6 +133,7 @@ export default function Notes() {
     );
   return (
     <div className="flex flex-col">
+      <NavBar/>
       {!ids && <p>Loading</p>}
       <div className="flex flex-row">
         <div className="flex flex-col w-2/6 items-center">
