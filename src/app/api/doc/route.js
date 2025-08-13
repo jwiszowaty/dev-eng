@@ -1,4 +1,4 @@
-import { connectDB, Document } from "@/models/mongoDB";
+import { connectDB, Document } from "../../../models/mongoDB.js";
 import { NextResponse } from "next/server";
 export async function GET(request) {
   try {
