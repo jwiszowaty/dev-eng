@@ -1,36 +1,7 @@
 "use client"
-import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import PrSimpleCont from "./tenses/PrSimpleCont";
-import PastSimpleCont from "@/components/tenses/PastSimpleCont";
-import PrPerfPastSimple from "@/components/tenses/PrPerfPastSimple";
-import PartsOfSpeech from "@/app/learn/grammar/parts-of-speech/page";
-import SentenceStructure from "@/app/learn/grammar/sentence-structure/page";
-import EnglishArticles from "@/app/learn/grammar/articles/page";
-import Conditionals from "@/app/learn/grammar/conditionals/page";
-import FutureForms from "@/components/tenses/FutureForms";
-import PassiveVoice from "@/app/learn/grammar/passive-voice/page";
-import ReportedSpeech from "@/app/learn/grammar/reported-speech/page";
-import PracticeDialog from "@/components/Writing/PracticeDialog";
-import CheckEssay from "@/components/Writing/CheckEssay";
-import MyEssays from "@/components/Writing/MyEssays";
+import { useState } from "react";
 import Report from "@/components/Report";
 import Link from "next/link";
-const articles = {
-  PresentSimplePresentContinuous: <PrSimpleCont />,
-  PastSimplePastContinuous: <PastSimpleCont />,
-  PresentPerfectPastSimple: <PrPerfPastSimple />,
-  PartsOfSpeech: <PartsOfSpeech />,
-  SentenceStructure: <SentenceStructure />,
-  EnglishArticles: <EnglishArticles />,
-  Conditionals: <Conditionals />,
-  FutureForms: <FutureForms />,
-  PassiveVoice: <PassiveVoice />,
-  ReportedSpeech: <ReportedSpeech />,
-  PracticeDialog: <PracticeDialog />,
-  CheckEssay: <CheckEssay />,
-  MyEssays: <MyEssays />,
-};
 
 const subCategoriesCSS =
   "px-4 py-2 hover:underline text-blue-800 text-sm font-medium transition";
@@ -66,15 +37,18 @@ export default function SideBar() {
         </p>
         <div
           className={
-            collapsible == "vocabulary" ? "visible mb-3 pl-3" : "hidden"
+            collapsible == "vocabulary" ? "visible flex flex-col h-full place-content-between mb-3 pl-3" : "hidden"
           }
         >
           <Link className={subCategoriesCSS} href="/learn/vocabulary/dictionary">
             My dictionary
           </Link>
+          <Link className={subCategoriesCSS} href="/learn/vocabulary/flashcards">
+            Practice
+          </Link>
         </div>
         <p
-          ocClick={() => setCollapsible(collapsible == "pronunciation" ? null : "pronunciation")}
+          onClick={() => setCollapsible(collapsible == "pronunciation" ? null : "pronunciation")}
           className="flex justify-between w-1/1 rounded-2xl px-3  bg-gray-200 text-gray-400  mb-3"
           disabled
         >

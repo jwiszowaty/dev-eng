@@ -1,14 +1,20 @@
 "use client";
+import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";export default function page() {
-  const [language, setLanguage] = useState("polish");
+  const [language, setLanguage] = useState(null);
   const [check, setCheck] = useState(false)
   const [number, setNumber] = useState(0);
   const [words, setWords] = useState(null);
+  const { currentUser } = useAuth();
   const router = useRouter();
-  useEffect(() => {
-    const vocabulary = sessionStorage.getItem("vocabulary");
-    setWords(JSON.parse(vocabulary));
+    useEffect(() => {
+    (async function () {
+      const words = await fetch(`/api/vocabulary?userId=${currentUser?.uid}`)
+        .then((response) => response.json())
+        .catch((error) => console.log("error: ", error));
+      setWords(words);
+    })();
   }, []);
   async function handleNext(word, karma) {
     const body = {
