@@ -1,4 +1,4 @@
-import { connectDB, Vocabulary } from "/Users/jakubwiszowaty/personal-projects/dev-eng/src/models/mongoDB.js"
+import { connectDB, Vocabulary } from "@/models/mongoDB.js"
 import { NextResponse } from "next/server";
 import mongoose from "mongoose"
 const { ObjectId } = mongoose.Types;
