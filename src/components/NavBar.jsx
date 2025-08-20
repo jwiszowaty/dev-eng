@@ -1,40 +1,57 @@
-"use client"
+"use client";
 import { useAuth } from "@/contexts/AuthContext";
 import SignOut from "../components/SignOut";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import TopBar from "./TopBar";
 export default function NavBar() {
   const pathname = usePathname();
-  const navCSS = "flex justify-center place-items-center self-center font-normal hover:font-extrabold w-auto h-full"
+  const navCSS =
+    "flex px-4 justify-center place-items-center self-center font-normal hover:bg-blue-950 hover:text-white w-auto h-full transition";
   const { currentUser } = useAuth();
-  const router = useRouter();
   return (
-    <header className="flex col-start-1 col-end-3 row-start-1 h-[60px] w-full place-items-center justify-between shadow-gray-200 shadow-xl">
-      <button onClick={() => router.replace("/")} className="flex w-[280px] pl-[30px] justify-center">
-        <h1 className="text-4xl font-bold text-[#4A4A4A] self-center w-full">
-          dev<span className="text-[#003B66]">Eng</span>
-      </h1>
-        </button>
-    <nav className="flex h-full gap-6 text-2xl ">
-      <a
-        className={navCSS}
-        href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2KQJfwa4yAFo5uNZ9VCbJMK2rNoCcdWHG3KxGC5FDw1O7HhbMfnJfVPDHlfwyBS80KVMrxUsLb"
-        target="_blank"
-      >
-        Book A Lesson 
-      </a>
-        {currentUser?.uid && <button className={pathname == "/notes" ? "self-center font-extrabold w-auto h-full" : navCSS}>
-          <Link href="/notes">
-            Notes
+    <div className="flex flex-col col-start-1 col-end-4 row-start-1 h-full w-full place-items-center place-content-center justify-between bg-transparent">
+        <nav className="flex justify-between w-[60vw] h-[36px] text-2xl">
+          <Link
+            href="/"
+            className={navCSS}
+          >
+            <h1 className="text-3xl font-bold text-[#4A4A4A] hover:text-white self-center w-full">
+              dev<span className="text-[#003B66] hover:text-white">Eng</span>
+            </h1>
           </Link>
-        </button>}
-        <button className={pathname == "/learn" ? "self-center font-extrabold w-auto h-full" : navCSS}>
-          <Link href="/learn">
+          <Link
+            className={navCSS}
+            href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2KQJfwa4yAFo5uNZ9VCbJMK2rNoCcdWHG3KxGC5FDw1O7HhbMfnJfVPDHlfwyBS80KVMrxUsLb"
+            target="_blank"
+          >
+            Book A Lesson
+          </Link>
+          {currentUser?.uid && (
+          <Link
+            href="/notes"
+              className={
+                pathname == "/notes"
+                  ? "self-center font-extrabold w-auto h-full"
+                  : navCSS
+              }
+            >
+              Notes
+            </Link>
+          )}
+          <Link
+            className={
+              pathname == "/learn"
+                ? "self-center font-extrabold w-auto h-full"
+                : navCSS
+            }
+          href="/learn"
+          >
             Knowledge Hub
           </Link>
-        </button>
-      <SignOut />
-      </nav>
-      </header>
+          <SignOut />
+        </nav>
+      {currentUser && <TopBar />}
+    </div>
   );
 }

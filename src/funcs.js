@@ -1,4 +1,4 @@
-import scenarios from "./Writing/scenarios";
+import scenarios from "@/components/Writing/scenarios";
 
 export async function sendMessage(messageToSend, history, setHistory, systemInstruction, setTask, situation, setData) {
   const newMessage = {
@@ -124,10 +124,11 @@ export async function sendEssay(essay) {
     console.error("Error fetching AI response:", error);
   }
 }
-export async function uploadEssay(userId, text, aiFeedback) {
+export async function uploadEssay(userId, title, text) {
   try {
+    const aiFeedback = "AI-generated feedback will be available soon.";
     const feedback = "Personal feedback will be available soon.";
-    const body = { userId, text, aiFeedback, feedback }
+    const body = { userId, title, text, aiFeedback, feedback }
     await fetch("/api/essay-db", {
       method: "POST",
       headers: {

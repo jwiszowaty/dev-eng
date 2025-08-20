@@ -19,9 +19,10 @@ const issueSchema = new Schema({
 }, { collection: "issues" })
 const essaySchema = new Schema({
     userId: { type: String, required: true },
-    text: { type: String, required: true },
-    aiFeedback: { type: String, required: true },
-    feedback: {type: String, required: true},
+    title: String,
+    text: String,
+    aiFeedback: String,
+    feedback: String,
 }, { collection: "essays" })
 const vocabularySchema = new Schema({
     userId: { type: String, required: true },
@@ -31,12 +32,19 @@ const vocabularySchema = new Schema({
     polishExample: String,
     difficulty: { type: Number, required: true },
 }, { collection: "vocabulary"})
+const worksheetSchema = new Schema({
+    userId: { type: String, required: true },
+    fileName: { type: String, required: true },
+    contentType: { type: String, required: true },
+    data: { type: Buffer, required: true }
+}, { collection: "worksheets" });
 
 const User = mongoose.models.User ?? mongoose.model("User", userSchema);
 const Document = mongoose.models.Document ?? mongoose.model("Document", documentSchema);
 const Issue = mongoose.models.Issue ?? mongoose.model("Issue", issueSchema);
 const Essay = mongoose.models.Essay ?? mongoose.model("Essay", essaySchema);
 const Vocabulary = mongoose.models.Vocabulary ?? mongoose.model("Vocabulary", vocabularySchema);
+const Worksheet = mongoose.models.Worksheet ?? mongoose.model("Worksheet", worksheetSchema);
 
 const connectDB = async (attempts = 0) => {
     try {
@@ -57,5 +65,5 @@ const connectDB = async (attempts = 0) => {
     }
 }
 export {
-    User, Document, Issue, Essay, Vocabulary, connectDB
+    User, Document, Issue, Essay, Vocabulary, Worksheet, connectDB
 }

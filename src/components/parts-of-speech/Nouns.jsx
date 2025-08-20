@@ -1,11 +1,11 @@
 import Word from '../Word.jsx';
 
-export default function Nouns() {
+export default function Nouns({setWord}) {
   const wrapText = (text) =>
     text
       .split(/(\s+)/)
       .map((part, i) =>
-        /\s+|^\W$|\d/u.test(part) ? part : <Word key={i}>{part}</Word>
+        /\s+|^\W$|\d/u.test(part) ? part : <Word key={i} setWord={setWord}>{part}</Word>
       );
 
   return (

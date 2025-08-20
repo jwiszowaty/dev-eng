@@ -12,7 +12,7 @@ export default function PassiveVoice() {
       );
 
   return (
-    <div className="grid grid-cols-[280px_auto] grid-rows-[60px_auto] gap-y-[30px] w-screen h-screen">
+    <div className="grid grid-cols-[280px_auto] grid-rows-[60px_auto] w-screen h-screen">
       <NavBar />
       <SideBar />
       <div className="pt-[40px] p-10 max-w-5xl">
