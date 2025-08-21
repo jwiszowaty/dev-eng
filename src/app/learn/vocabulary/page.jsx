@@ -62,7 +62,7 @@ export default function Vocabulary() {
     <div className="overflow-hidden grid grid-cols-[20vw_60vw_20vw] grid-rows-[60px_calc(100vh-60px)] w-screen h-screen">
       <NavBar />
       <SideBar />
-      <div className="h-full box-border max-w-5xl p-10 grid col-start-2 col-end-3 row-start-2 grid-rows-[auto_90px_auto_auto] w-[60vw] pt-0  border-x-2 border-blue-950">
+      <div className="h-full box-border max-w-5xl p-10 grid col-start-2 col-end-3 row-start-2 grid-rows-[40px_90px_26px_auto] w-[60vw] pt-0  border-x-2 border-blue-950">
          
         <div className="flex row-start-1 h-[40px] gap-4 place-items-center">
           <p className="text-2xl">My vocabulary</p>
@@ -135,7 +135,7 @@ export default function Vocabulary() {
           {vocabulary?.length > 0 &&
             vocabulary.map((word) => {
               return (
-                <div key={word._id} className="h-full w-full hover:bg-amber-50">
+                <div key={word._id} className="h-[40px] w-full hover:bg-amber-50">
                   <div className="grid grid-cols-[1fr_1fr_1fr_4fr] h-min place-items-center gap-4">
                     <p className="px-2 h-min text-center">{word.polish}</p>
                     <p className="px-2 h-min text-center">{word.english}</p>
