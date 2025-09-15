@@ -42,3 +42,12 @@ export async function POST(request) {
     const savedWorksheet = await newWorksheet.save();
     return NextResponse.json(savedWorksheet, { status: 201 })
 }
+export async function PUT(request) {
+    const {
+        _id,
+        completed
+    } = await request.json();
+    await connectDB();
+   const updatedWorksheet = await Worksheet.findOneAndUpdate({ _id}, { completed },{ new: true });
+    return NextResponse.json(updatedWorksheet, { status: 200 })
+}

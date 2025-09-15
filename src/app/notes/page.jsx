@@ -5,7 +5,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { uploadDocs } from "@/app/api/uploadDocs";
 import useNetworkStatus from "@/app/hooks/useNetworkStatus";
 import { useRouter } from "next/navigation";
-import FunFacts from "@/components/FunFacts";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
 export default function Notes() {
@@ -49,7 +48,26 @@ export default function Notes() {
     setDocDisplayed({ documentId, name, html: doc.data?.html ?? doc.html });
     setLoading(false);
   }
-
+  async function checkForNewDocs() {
+  const folderId = await user.data.folderId;
+        const docIds = await fetch(
+          `/api/export-docIds?rootFolderId=${folderId}`
+        )
+          .then((res) => res.json())
+          .catch((error) =>
+            console.error("error fetching document IDs: ", error)
+          );
+        setIds(docIds);
+        let doc;
+        
+        setLoading(false);
+        await uploadDocs(
+          docIds,
+          currentUser.uid,
+          user.data.documents,
+          setDocuments
+        );
+  }
   useEffect(() => {
     if (isOnline && currentUser?.uid) {
       (async function () {
@@ -64,60 +82,15 @@ export default function Notes() {
           return;
         }
         setDocuments(user.data.documents);
-        const folderId = await user.data.folderId;
-        const docIds = await fetch(
-          `/api/export-docIds?rootFolderId=${folderId}`
-        )
-          .then((res) => res.json())
-          .catch((error) =>
-            console.error("error fetching document IDs: ", error)
-          );
-        const firstDoc = docIds[0];
-        setIds(docIds);
-        let doc;
-        const userId = currentUser.uid;
-        setDocDisplayed({ documentId: firstDoc.id, name: firstDoc.name });
-        doc =
-          user.data.documents.length > 0
-            ? user.data.documents.find(
-                (document) => document.documentId == firstDoc.id
-              )
-            : undefined;
-        if (!doc) {
-          doc = await fetch(`/api/google-doc?documentId=${firstDoc.id}`, {
-            method: "GET",
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              return data;
-            })
-            .catch((error) => console.error("error document user: ", error));
-          const document = {
-            userId,
-            documentId: firstDoc.id,
-            name: firstDoc.name,
-            html: doc.html,
-          };
-          setDocuments((prevDocs) =>
-            Array.isArray(prevDocs) ? [...prevDocs, document] : [document]
-          );
-        }
-        setDocDisplayed({
-          documentId: firstDoc.id,
-          name: firstDoc.name,
-          html: doc.data?.html ?? doc.html,
-        });
-        setLoading(false);
-        await uploadDocs(
-          docIds,
-          currentUser.uid,
-          user.data.documents,
-          setDocuments
-        );
+        const documentIds = (user.data.documents).map(document => {
+          return {id: document.documentId, title: document.name}   
+        })
+        setDocDisplayed({documentId: documentIds[0].id, name: documentIds[0].title})
+        setIds(documentIds);
+        checkForNewDocs()
       })();
     }
   }, [isOnline, currentUser]);
-  if (!currentUser) return <p>wait</p>;
   
   return (
     <div className="flex flex-col">
@@ -127,15 +100,19 @@ export default function Notes() {
         <div className="flex flex-col w-2/6 items-center">
           <p className="text-2xl">Notes</p>
           {ids &&
-            ids.map((doc) => (
-              <button
-                className={docDisplayed.documentId == doc.id ? "font-bold" : ""}
-                key={doc.id}
-                onClick={() => showDoc({ documentId: doc.id, name: doc.name })}
-              >
-                {doc.name}
-              </button>
-            ))}
+            ids.map((doc) => {
+              return (
+                <button
+                  className={docDisplayed.documentId == doc.id ? "font-bold" : ""}
+                  key={doc.id}
+                  onClick={() => showDoc({ documentId: doc.id, name: doc.title })}
+                >
+                  {doc.title}
+                </button>
+
+              )
+            }
+            )}
         </div>
         <Note
           loading={loading}

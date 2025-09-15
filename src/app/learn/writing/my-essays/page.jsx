@@ -42,7 +42,7 @@ export default function page() {
           <p className="text-2xl">My essays</p>
           <button
             onClick={() => setEssaySubmission(true)}
-            className="border px-2 h-min"
+            className="border px-2 h-min bg-yellow-100"
           >
             Submit an essay
           </button>

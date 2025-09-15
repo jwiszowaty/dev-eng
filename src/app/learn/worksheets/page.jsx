@@ -49,10 +49,14 @@ export default function Worksheets() {
           <div>
             {worksheets &&
               worksheets.map((worksheet) => {
-                return (
+                 return (
+                  <div className="flex px-4 place-items-center">
+                     <div>{worksheet.completed ? "✅" : "🔴"}</div>
+                     {worksheet.completed}
                   <p onClick={() => fetchWorksheet(worksheet._id)} className={subCategoriesCSS}>
                     {worksheet.fileName}
-                  </p>
+                    </p>
+                    </div>
                 );
               })}
           </div>
@@ -71,9 +75,13 @@ export default function Worksheets() {
             {worksheets &&
               worksheets.map((worksheet) => {
                 return (
+                  <div className="flex px-4 place-items-center">
+                    <div>{ worksheet.completed ? "✅" : "🔴"}</div>
+                     {(worksheet.completed).toString()}
                   <p onClick={() => fetchWorksheet(worksheet._id)} className={subCategoriesCSS}>
                     {worksheet.fileName}
-                  </p>
+                    </p>
+                    </div>
                 );
               })}
           </div>

@@ -47,7 +47,7 @@ export default function NavBar() {
             }
           href="/learn"
           >
-            Knowledge Hub
+            Learn
           </Link>
           <SignOut />
         </nav>

@@ -36,7 +36,8 @@ const worksheetSchema = new Schema({
     userId: { type: String, required: true },
     fileName: { type: String, required: true },
     contentType: { type: String, required: true },
-    data: { type: Buffer, required: true }
+    downloadUrl: String,
+    completed: Boolean,
 }, { collection: "worksheets" });
 
 const User = mongoose.models.User ?? mongoose.model("User", userSchema);

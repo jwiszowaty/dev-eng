@@ -4,7 +4,7 @@ import SideBar from "@/components/SideBar";
 
 export default function KnowledgeHub() {
   return (
-    <div className="grid grid-cols-[40vw_60vw_40vw] grid-rows-[60px_auto] w-screen h-screen">
+    <div className="overflow-hidden grid grid-cols-[20vw_60vw_20vw] grid-rows-[60px_calc(100vh-60px)] w-screen h-screen">
       <NavBar />
       <SideBar/>
     </div>
