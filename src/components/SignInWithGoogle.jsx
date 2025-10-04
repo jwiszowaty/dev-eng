@@ -23,7 +23,7 @@ export default function SignInWithGoogle({ setLoading }) {
       if (res.ok) {
         console.log("Session cookie set!");
       } else {
-        alert(res.statusText);
+        alert("cookie not set: ", res.statusText);
       }
       const response = await fetch(`/api/users?userId=${user.uid}`);
       const mongoUser = await response.json();
@@ -36,7 +36,7 @@ export default function SignInWithGoogle({ setLoading }) {
       router.replace(res.url);
     } catch (error) {
       console.log(error);
-      alert(error.message);
+      alert("error: ",error.message);
       setLoading(false);
     }
   };
