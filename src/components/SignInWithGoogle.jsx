@@ -20,6 +20,7 @@ export default function SignInWithGoogle({ setLoading }) {
         },
         body: JSON.stringify({ idToken, user }),
       });
+
       if (res.ok) {
         console.log("Session cookie set!");
       } else {
@@ -27,15 +28,14 @@ export default function SignInWithGoogle({ setLoading }) {
         
         alert("cookie not set: ", res.statusText);
       }
+      const sessionLogin = await res.json();
       const response = await fetch(`/api/users?userId=${user.uid}`);
       const mongoUser = await response.json();
-      console.log(response, mongoUser);
-      
       const credential = GoogleAuthProvider.credentialFromResult(result);
       setAccessToken(credential.accessToken);
       setCurrentUser((prev) => ({ ...prev, ...mongoUser }));
+      router.replace(sessionLogin.url);
       setLoading(false);
-      router.replace(res.url);
     } catch (error) {
       console.log(error);
       alert("error: ",error.message);
