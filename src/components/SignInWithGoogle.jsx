@@ -23,6 +23,8 @@ export default function SignInWithGoogle({ setLoading }) {
       if (res.ok) {
         console.log("Session cookie set!");
       } else {
+        console.log(res);
+        
         alert("cookie not set: ", res.statusText);
       }
       const response = await fetch(`/api/users?userId=${user.uid}`);
