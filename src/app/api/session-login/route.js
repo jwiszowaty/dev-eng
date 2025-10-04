@@ -17,8 +17,8 @@ export async function POST(req) {
 
         const payload = { uid: user.uid, type: userType };
         const sessionCookie = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
-        const nextPage = userType === "teacher" ? "/teacher" : "/student/assignments";
-        const response = NextResponse.redirect(new URL(nextPage, req.url));
+        const nextPage = (userType === "teacher" ? "/teacher" : "/student/assignments");
+        const response = NextResponse.json({ success: true, url: nextPage }, { status: 200 });
 
         response.cookies.set('session', sessionCookie, {
             maxAge: 60 * 60 * 24 * 5,
