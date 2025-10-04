@@ -1,14 +1,12 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
-import { auth } from "../../firebase";
+import { auth } from "../lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
 const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
   const logout = () => {
     signOut(auth);
   };
@@ -22,7 +20,14 @@ export default function AuthProvider({ children }) {
   }, []);
   return (
     <AuthContext.Provider
-      value={{ currentUser, logout, loading, accessToken, setAccessToken }}
+      value={{
+        setCurrentUser,
+        currentUser,
+        logout,
+        loading,
+        accessToken,
+        setAccessToken,
+      }}
     >
       {children}
     </AuthContext.Provider>

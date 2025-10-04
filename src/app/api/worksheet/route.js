@@ -1,4 +1,4 @@
-import { connectDB, Worksheet } from "@/models/mongoDB";
+import { connectDB, Worksheet } from "@/server/models/mongoDB";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
@@ -12,7 +12,7 @@ export async function GET(request) {
             return NextResponse.json({ success: true, data: worksheets }, { status: 200 });
         } else {
             const response = await Worksheet.findOne({ userId, _id }).exec();
-            
+
             return NextResponse.json({
                 success: true,
                 data: response
@@ -48,6 +48,6 @@ export async function PUT(request) {
         completed
     } = await request.json();
     await connectDB();
-   const updatedWorksheet = await Worksheet.findOneAndUpdate({ _id}, { completed },{ new: true });
+    const updatedWorksheet = await Worksheet.findOneAndUpdate({ _id }, { completed }, { new: true });
     return NextResponse.json(updatedWorksheet, { status: 200 })
 }

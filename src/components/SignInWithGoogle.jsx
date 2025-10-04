@@ -1,16 +1,43 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../../firebase";
+import { auth, googleProvider } from "../lib/firebase";
 import { useAuth } from "../contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
-export default function SignInWithGoogle() {
-  const { setAccessToken } = useAuth();
+export default function SignInWithGoogle({ setLoading }) {
+  const { setAccessToken, setCurrentUser } = useAuth();
+  const router = useRouter();
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      const idToken = await user.getIdToken();
+      const res = await fetch("/api/session-login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idToken, user }),
+      });
+      if (res.ok) {
+        console.log("Session cookie set!");
+      } else {
+        alert(res.statusText);
+      }
+      const response = await fetch(`/api/users?userId=${user.uid}`);
+      const mongoUser = await response.json();
+      console.log(response, mongoUser);
+      
       const credential = GoogleAuthProvider.credentialFromResult(result);
       setAccessToken(credential.accessToken);
+      setCurrentUser((prev) => ({ ...prev, ...mongoUser }));
+      setLoading(false);
+      router.replace(res.url);
     } catch (error) {
+      console.log(error);
       alert(error.message);
+      setLoading(false);
     }
   };
   return (

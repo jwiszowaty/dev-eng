@@ -1,30 +1,31 @@
 "use client";
-import useNetworkStatus from "./hooks/useNetworkStatus";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import useNetworkStatus from "../hooks/useNetworkStatus";
 import NetworkOffline from "@/components/NetworkOffline";
-import { useRouter} from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
-import NavBar from "@/components/NavBar";
 import Report from "@/components/Report";
+import SignInWithGoogle from "@/components/SignInWithGoogle";
+import { useState } from "react";
 export default function Dashboard() {
-  const router = useRouter();
-  const {currentUser } = useAuth()
+  const [loading, setLoading] = useState(false);
   const { isOnline } = useNetworkStatus();
-  if (isOnline && !currentUser?.uid) {
-    router.push("/learn")
+
+  if (isOnline) {
+    return (
+      <>
+        <h1 className="text-3xl font-bold mb-4 text-center">
+          Welcome to Dev<span className="text-[#003B66]">Eng</span>!
+        </h1>
+        <div className="flex justify-center mt-6">
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <SignInWithGoogle setLoading={setLoading} />
+          )}
+        </div>
+        <Report />
+      </>
+    );
+  } else {
+    return <NetworkOffline />;
   }
-  return (
-    <>
-        <NavBar/>
-      <main>
-        {!isOnline && <NetworkOffline />}
-        {isOnline && currentUser?.uid && (
-          <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-4xl font-bold mb-4">Welcome to your Dashboard</h1>
-            <p className="text-lg mb-6">Here you can manage your notes, essays, and more.</p>
-          </div>
-        )}
-        <Report/>
-      </main>
-    </>
-  );
 }

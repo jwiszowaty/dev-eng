@@ -15,7 +15,7 @@ export async function uploadDocs(docIds, userId, documents, setDocuments) {
                     name: name,
                     html: data.html,
                 };
-                const res = await fetch("/api/doc", {
+                const res = await fetch("/api/docs", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(document),
@@ -27,7 +27,7 @@ export async function uploadDocs(docIds, userId, documents, setDocuments) {
         })
     );
     if (newDocsAdded) {
-        await fetch("/api/user", {
+        await fetch("/api/users", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userId, documents: documentsToUpdate }),

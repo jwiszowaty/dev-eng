@@ -27,10 +27,14 @@ export default function Report() {
   async function handleSubmit() {
     setReport(!report);
 
-    const request = await fetch("/api/issue", {
+    const request = await fetch("/api/issues", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({userEmail: currentUser?.email ?? email, issueMessage: issue, status: "new"}),
+      body: JSON.stringify({
+        userEmail: currentUser?.email ?? email,
+        issueMessage: issue,
+        status: "new",
+      }),
     });
     if (request.status !== 201) {
       setMessage("Sorry, your report was unsuccessful. Try again later.");
@@ -66,12 +70,16 @@ export default function Report() {
               <p className="w-fit text-nowrap">Your email:</p>
               <input
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-white w-full h-fit px-2 text-black" required />
+                className="bg-white w-full h-fit px-2 text-black"
+                required
+              />
             </div>
           )}
           <textarea
             onChange={(e) => setIssue(e.target.value)}
-            className="bg-white w-full h-full text-black p-2" required></textarea>
+            className="bg-white w-full h-full text-black p-2"
+            required
+          ></textarea>
         </div>
         <button
           type="submit"
