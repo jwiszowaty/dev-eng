@@ -10,9 +10,9 @@ export default function SubNavBar({
 }) {
   useEffect(() => {}, [selectedStudent]);
   return (
-    <div className="flex flex-col w-min m-4 gap-2">
+    <div className="flex flex-col w-full p-4 gap-2">
       {!students && <LoadingSpinner />}
-      <div className="flex w-[100vw] gap-4">
+      <div className="flex w-full gap-4">
         {students &&
           students.map((student) => {
             return (
@@ -30,7 +30,7 @@ export default function SubNavBar({
             );
           })}
       </div>
-      <div className="flex w-[100vw] gap-4">
+      <div className="flex w-full gap-4">
           <button
             onClick={() => setView("assignments")}
             className={"underline".concat(

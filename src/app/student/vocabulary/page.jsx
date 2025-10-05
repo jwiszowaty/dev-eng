@@ -60,11 +60,11 @@ export default function Vocabulary() {
   return (
     <div>
       <NavBar />
-      <div className="w-[60vw] h-full place-self-center">
-        <div className="flex gap-4 place-items-center my-2">
-          <p className="text-2xl">My vocabulary</p>
+      <div className="w-[95vw] md:max-w-[60vw] h-full place-self-center">
+        <div className="flex flex-wrap place-items-center my-">
+          <p className="text-2xl mr-4">My vocabulary</p>
           <Link
-            className="flex px-1 rounded border-1 bg-yellow-100"
+            className="flex px-1 mr-4 rounded border-1 bg-yellow-100"
             href="/student/vocabulary/flashcards"
           >
             Practice
@@ -73,7 +73,6 @@ export default function Vocabulary() {
             <p>Karma</p>
             <p>{karma}</p>
           </div>
-          
         </div>
 
         <form
@@ -81,47 +80,47 @@ export default function Vocabulary() {
             e.preventDefault();
             handleSubmit();
           }}
-          className="flex gap-2 place-items-center py-2 pr-2 h-full"
+          className="flex flex-col md:flex-row place-items-center my-4 p-2 h-full gap-4 bg-amber-200"
         >
-          <div className="flex flex-col justify-between w-full gap-2 h-full">
-            <div className="flex gap-2 w-full justify-start place-items-center">
-              <span className="text-2xl">🇵🇱</span>
+          <div className="flex flex-col justify-between w-full gap-4 h-full">
+            <div className="flex flex-col md:flex-row gap-2 w-full justify-start place-items-center">
               <input
                 onChange={(e) => setPolish(e.target.value)}
                 value={polish}
-                className="border-1 border-gray-400 text-center h-min"
-                placeholder="polish"
+                className="w-full border-1 border-gray-400 text-center h-min bg-white"
+                placeholder="🇵🇱 polish"
                 required
               />
               <input
                 onChange={(e) => setPolishExample(e.target.value)}
                 value={polishExample}
-                className="w-full border-1 border-gray-400 text-center h-min"
-                placeholder="przykład"
+                className="w-full border-1 border-gray-400 text-center h-min italic bg-white"
+                placeholder="🇵🇱 przykład"
               />
             </div>
             <div className="flex gap-2 w-full justify-start place-items-center">
-              <span className="text-2xl">🇬🇧</span>
-              <input
-                onChange={(e) => setEnglish(e.target.value)}
-                value={english}
-                className="border-1 border-gray-400 text-center h-min"
-                placeholder="english"
-                required
-              />
-              <input
-                onChange={(e) => setEnglishExample(e.target.value)}
-                value={englishExample}
-                className="w-full border-1 border-gray-400 text-center h-min"
-                placeholder="example"
-              />
+              <div className="flex flex-col md:flex-row gap-2 w-full justify-start place-items-center ">
+                <input
+                  onChange={(e) => setEnglish(e.target.value)}
+                  value={english}
+                  className="w-full border-1 border-gray-400 text-center h-min bg-white"
+                  placeholder="🇬🇧 english"
+                  required
+                />
+                <input
+                  onChange={(e) => setEnglishExample(e.target.value)}
+                  value={englishExample}
+                  className="w-full border-1 border-gray-400 text-center h-min italic bg-white"
+                  placeholder="🇬🇧 example"
+                />
+              </div>
             </div>
           </div>
           <button
             type="submit"
-            className="rounded border-1 border-gray-700 px-1 w-min h-[72px] outline-none"
+            className="rounded border-1 border-gray-700 px-1 md:w-min w-full md:h-[60px] outline-non bg-white"
           >
-            add
+            add (enter)
           </button>
         </form>
 
@@ -137,7 +136,7 @@ export default function Vocabulary() {
               return (
                 <div
                   key={word._id}
-                  className="h-[40px] w-full hover:bg-amber-50"
+                  className="h-min w-full hover:bg-amber-50"
                 >
                   <div className="grid grid-cols-[1fr_1fr_1fr_4fr] h-min place-items-center gap-4">
                     <p className="px-2 h-min text-center">{word.polish}</p>

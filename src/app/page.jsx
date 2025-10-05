@@ -11,7 +11,8 @@ export default function Dashboard() {
 
   if (isOnline) {
     return (
-      <>
+      <div className="flex place-content-center w-[100vw] h-[100vh] bg-blue-950">
+      <div className="bg-gray-200 rounded flex flex-col place-self-center place-content-center shadow-2xl shadow-black p-4 w-[80%]">
         <h1 className="text-3xl font-bold mb-4 text-center">
           Welcome to Dev<span className="text-[#003B66]">Eng</span>!
         </h1>
@@ -23,7 +24,8 @@ export default function Dashboard() {
           )}
         </div>
         <Report />
-      </>
+        </div>
+        </div>
     );
   } else {
     return <NetworkOffline />;

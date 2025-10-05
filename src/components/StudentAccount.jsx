@@ -10,18 +10,18 @@ export default function StudentAccount({
   const [loading, setLoading] = useState(false);
   useEffect(()=>{}, [])
   return (
-    <div className="flex flex-col place-items-center">
+    <div className="w-full flex flex-col place-items-center">
       <p>Account details</p>
       {selectedStudent && (
-        <div className="my-4">
-          <div className="flex gap-3 flex-nowrap">
-            <p className="flex place-content-end w-[90px] flex-nowrap">user ID:</p>
-            <p className="mr-3 px-3 w-full">{selectedStudent.userId}</p>
+        <div className="flex flex-col py-4 gap-3">
+          <div className="flex flex-wrap place-content-center">
+            <p className="flex place-content-center flex-nowrap font-bold">user ID:</p>
+            <p className="pr-3 px-3">{selectedStudent.userId}</p>
           </div>
-          <div className="flex gap-3">
-            <p className="flex place-content-end w-[90px] flex-nowrap">name:</p>
+          <div className="flex flex-wrap place-content-center">
+            <p className="flex place-content-center flex-nowrap font-bold pr-3">name:</p>
             <input
-              className="bg-gray-200 mr-3 px-3 w-full"
+              className="bg-gray-200 pr-3 px-3"
               value={selectedStudent.name}
               onChange={(e) => setSelectedStudent({...selectedStudent, name: e.target.value})}
             />

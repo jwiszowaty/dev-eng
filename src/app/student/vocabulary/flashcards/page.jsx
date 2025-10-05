@@ -1,7 +1,8 @@
 "use client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";export default function page() {
+import { useEffect, useState } from "react";
+export default function page() {
   const [language, setLanguage] = useState(null);
   const [check, setCheck] = useState(false)
   const [number, setNumber] = useState(0);
@@ -50,9 +51,9 @@ import { useEffect, useState } from "react";export default function page() {
     );
   }
   return (
-    <div className="grid grid-cols-2 grid-rows-[60px_200px] max-w-[600px] max-h-[400px] w-1/2 place-self-center">
-      <p className="flex justify-center place-items-center">Flashcards</p>
-      <button className="flex w-1/2 max-w-[600px] justify-center place-items-center place-self-center" onClick={() => router.back()}>go back</button>
+    <div className="grid grid-cols-2 grid-rows-[60px_200px] w-[95vw] md:max-w-[600px] max-h-[400px] md:w-1/2 place-self-center">
+      <p className="text-2xl flex justify-center place-items-center">Flashcards</p>
+      <button className="bg-gray-300 rounded-full border flex w-1/2 max-w-[600px] justify-center place-items-center place-self-center" onClick={() => router.back()}>home</button>
       {words && (
         <div className="grid row-start-2 col-start-1 col-span-2 grid-cols-[1fr_1fr_1fr] grid-rows-[1fr_1fr_1fr_1fr] border-2 w-full h-full overflow-hidden">
           <img src={language == "polish" ? "/polishFlag.svg" : "/ukFlag.svg"} className="col-start-1 row-start-1 h-[30px] w-[60px] object-fill" />

@@ -4,8 +4,6 @@ import { uploadEssay } from "@/lib/funcs";
 import { useAuth } from "@/contexts/AuthContext";
 import NavBar from "@/components/common/NavBar";
 
-import { useRouter } from "next/navigation";
-
 export default function page() {
   const [show, setShow] = useState(null);
   const [essaySubmission, setEssaySubmission] = useState(false);
@@ -36,7 +34,7 @@ export default function page() {
   return (
     <div>
       <NavBar />
-      <div className="w-[60vw] place-self-center">
+      <div className="w-[95vw] md:max-w-[60vw] place-self-center">
       <div className="flex gap-4 place-items-center my-2">
       <p className="text-2xl">Essays</p>
         <button
