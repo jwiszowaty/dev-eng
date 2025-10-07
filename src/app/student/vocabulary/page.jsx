@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Vocabulary() {
+  const [showOptions, setShowOptions] = useState(false);
   const [englishExample, setEnglishExample] = useState("");
   const [polishExample, setPolishExample] = useState("");
   const [polish, setPolish] = useState("");
@@ -61,7 +62,7 @@ export default function Vocabulary() {
     <div>
       <NavBar />
       <div className="w-[95vw] md:max-w-[60vw] h-full place-self-center">
-        <div className="flex flex-wrap place-items-center my-">
+        <div className="flex flex-wrap place-items-center my-2">
           <p className="text-2xl mr-4">My vocabulary</p>
           <Link
             className="flex px-1 mr-4 rounded border-1 bg-yellow-100"
@@ -124,25 +125,24 @@ export default function Vocabulary() {
           </button>
         </form>
 
-        <div className="row-start-3 grid grid-cols-[1fr_1fr_1fr_4fr] gap-4 h-min w-full place-items-center border-1">
+        <div className="grid grid-cols-[2fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr_4fr] h-min w-full place-items-center border-1 gap-1">
           <p className="px-2 text-center w-full">english</p>
           <p className="px-2 text-center w-full">polish</p>
-          <p className="px-2 text-center w-full">karma</p>
-          <p className=""></p>
+          <p className="px-2 text-center w-full">🧠</p>
         </div>
-        <div className="row-start-4 flex flex-col overflow-y-auto h-full border-1 w-full">
-          {vocabulary?.length > 0 &&
-            vocabulary.map((word) => {
+        {vocabulary?.length > 0 && (
+          <div className="row-start-4 flex flex-col overflow-y-auto h-full border-1 w-full">
+            {vocabulary.map((word) => {
               return (
-                <div
-                  key={word._id}
-                  className="h-min w-full hover:bg-amber-50"
-                >
-                  <div className="grid grid-cols-[1fr_1fr_1fr_4fr] h-min place-items-center gap-4">
+                <div key={word._id} className="h-min w-full hover:bg-amber-50">
+                  <div
+                    onClick={() => setShowOptions(!showOptions)}
+                    className="grid grid-cols-[2fr_2fr_1fr] md:grid-cols-[2fr_2fr_1fr_4fr] gap-1 h-min w-full place-items-center"
+                  >
                     <p className="px-2 h-min text-center">{word.polish}</p>
                     <p className="px-2 h-min text-center">{word.english}</p>
                     <p className="px-2 h-min text-center">{word.difficulty}</p>
-                    <div className="flex place-items-center">
+                    <div className="md:flex place-items-center hidden md:visible">
                       <div
                         onClick={() =>
                           setShowExample(
@@ -150,7 +150,7 @@ export default function Vocabulary() {
                           )
                         }
                         className={
-                          "text-nowrap h-min cursor-default rounded-2xl px-2 hover:underline text-blue-700"
+                          "hidden md:visible text-nowrap h-min cursor-default rounded-2xl px-2 hover:underline text-blue-700"
                         }
                       >
                         {showExample == word._id
@@ -175,15 +175,67 @@ export default function Vocabulary() {
                       : "hidden"
                     ).concat(" px-7")}
                   >
-                    <div>
-                      <p className="flex col-span-3">{word.englishExample}</p>
-                      <p className="flex col-span-3">{word.polishExample}</p>
+                    <div className="py-1">
+                      <p className="flex col-span-3 text-gray-600">
+                        {word.englishExample}
+                      </p>
+                      <p className="flex col-span-3 text-gray-600">
+                        {word.polishExample}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    className={"flex flex-col place-items-center".concat(
+                      showOptions ? " visible" : " hidden"
+                    )}
+                  >
+                    <div
+                      className={(showExample == word._id
+                        ? "visible"
+                        : "md:hidden"
+                      ).concat(" px-7")}
+                    >
+                      <div className="py-1">
+                        <p className="flex col-span-3 text-gray-600">
+                          {word.englishExample}
+                        </p>
+                        <p className="flex col-span-3 text-gray-600">
+                          {word.polishExample}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex w-full justify-between">
+                      <div
+                        onClick={() =>
+                          setShowExample(
+                            showExample === word._id ? "" : word._id
+                          )
+                        }
+                        className={
+                          "hidden md:visible text-nowrap h-min cursor-default rounded-2xl px-2 hover:underline text-blue-700"
+                        }
+                      >
+                        {showExample == word._id
+                          ? "hide examples"
+                          : "show examples"}
+                      </div>
+                      <button className="text-blue-700 h-min w-full text-center hover:underline">
+                        edit
+                      </button>
+                      <button
+                        className="text-blue-700 h-min w-full text-center hover:underline"
+                        onClick={() => handleDelete(word._id)}
+                      >
+                        delete
+                      </button>
                     </div>
                   </div>
                 </div>
               );
             })}
-        </div>
+          </div>
+        )}
+        {vocabulary?.length === 0 && <p className="w-full p-2 italic text-xl">I'm speechless . . .</p>}
       </div>
     </div>
   );

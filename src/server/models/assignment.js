@@ -5,7 +5,7 @@ const assignmentSchema = new Schema({
     category: { type: String, enum: ['general', 'writing'], default: 'general' },
     title: String,
     description: String,
-    status: { type: String, enum: ['pending', 'completed'], default: 'pending' },
+    status: { type: String, enum: ['pending', 'submitted', 'completed'], default: 'pending' },
 }, { collection: "assignments" })
 
 const Assignment = mongoose.models?.Assignment ?? mongoose.model("Assignment", assignmentSchema);

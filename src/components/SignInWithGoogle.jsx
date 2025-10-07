@@ -35,7 +35,6 @@ export default function SignInWithGoogle({ setLoading }) {
       setAccessToken(credential.accessToken);
       setCurrentUser((prev) => ({ ...prev, ...mongoUser }));
       router.replace(sessionLogin.url);
-      setLoading(false);
     } catch (error) {
       console.log(error);
       alert("error: ",error.message);
