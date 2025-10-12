@@ -1,45 +1,36 @@
-"use client";
+"use client"
 
 import Assignments from "@/components/Assignments";
 import NavBar from "@/components/common/NavBar";
 import Flashcards from "@/components/Flashcards";
 import StudentAccount from "@/components/StudentAccount";
 import SubNavBar from "@/components/SubNavBar";
-import EssaysTeacher from "@/components/teacher/EssaysTeacher";
 import { useAuth } from "@/contexts/AuthContext";
 import { getStudents } from "@/services/userApi";
 import { useEffect, useState } from "react";
 
 export default function page() {
   const { currentUser } = useAuth();
-  const [students, setStudents] = useState();
-  const [selectedStudent, setSelectedStudent] = useState();
-  const [view, setView] = useState();
+  const [students, setStudents] = useState()
+  const [selectedStudent, setSelectedStudent] = useState()
+  const [view, setView] = useState()
 
   useEffect(() => {
+    
     if (currentUser?.uid) {
-      (async function () {
-        const response = await getStudents(currentUser.uid);
-        const ownStudents = response.data.map((student) => ({
-          userId: student.userId,
-          name: student.name,
-        }));
-        setStudents(ownStudents);
-        setSelectedStudent(ownStudents[0]);
-        setView("assignments");
-      })();
+      (async function() {
+        const response = await getStudents(currentUser.uid)
+        const ownStudents = response.data.map(student => ({ userId: student.userId, name: student.name }));
+        setStudents(ownStudents)
+        setSelectedStudent(ownStudents[0])
+        setView("assignments")
+      })()
     }
   }, [currentUser]);
   return (
     <div className="flex flex-col w-full">
-      <NavBar user={"teacher"} />
-      <SubNavBar
-        students={students}
-        selectedStudent={selectedStudent}
-        setSelectedStudent={setSelectedStudent}
-        setView={setView}
-        view={view}
-      />
+      <NavBar user={ "teacher" } />
+      <SubNavBar students={students} selectedStudent={selectedStudent} setSelectedStudent={setSelectedStudent} setView={setView} view={view} />
       {selectedStudent && view === "account" && (
         <StudentAccount
           selectedStudent={selectedStudent}
@@ -51,10 +42,8 @@ export default function page() {
       )}
       {selectedStudent && view === "assignments" && (
         <Assignments selectedStudent={selectedStudent} />
-      )}
-      {selectedStudent && view === "written" && (
-        <EssaysTeacher selectedStudent={selectedStudent} />
-      )}
+          )}
+          
     </div>
-  );
+  )
 }

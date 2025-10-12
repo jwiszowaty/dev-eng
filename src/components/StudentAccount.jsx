@@ -1,5 +1,5 @@
 import LoadingSpinner from "@/components/common/LoadingSpinner";
-import { updateStudent } from "@/services/userApi";
+import { updateUser } from "@/services/userApi";
 import { useEffect, useState } from "react";
 
 export default function StudentAccount({
@@ -30,7 +30,7 @@ export default function StudentAccount({
       )}
       <div className="border w-[200px]" onClick={async () => {
         setLoading(true)
-        await updateStudent(selectedStudent)
+        await updateUser(selectedStudent)
         setLoading(false)
       }}>
         {loading ? <LoadingSpinner/> : "save"}

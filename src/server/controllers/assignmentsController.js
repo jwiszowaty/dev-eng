@@ -19,3 +19,7 @@ export async function updateAssignment({_id, ...data}) {
     );
     return updatedAssignment;
 }
+export async function removeAssignment(_id) {
+    await connectDB();
+    return Assignment.findOneAndDelete({ _id });
+}

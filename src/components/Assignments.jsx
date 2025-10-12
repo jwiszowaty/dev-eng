@@ -1,5 +1,6 @@
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import AssignmentSubmission from "@/components/AssignmentSubmission";
 import {
+  deleteAssignment,
   getAssignments,
   postAssignments,
   putAssignment,
@@ -7,8 +8,14 @@ import {
 import { useEffect, useState } from "react";
 
 export default function Assignments({ selectedStudent }) {
-  const [trigger, setTrigger] = useState(false)
   const [assignments, setAssignments] = useState([]);
+    const [assignment, setAssignment] = useState();
+    const [showDescription, setShowDescription] = useState(false);
+    const [title, setTitle] = useState("");
+    const [essay, setEssay] = useState("");
+    const [submit, setSubmit] = useState(false);
+  
+  const [trigger, setTrigger] = useState(false)
   const [edit, setEdit] = useState();
   const [loading, setLoading] = useState(false);
   async function handleSubmit(e, edit) {
@@ -33,98 +40,66 @@ export default function Assignments({ selectedStudent }) {
     })();
   }, [trigger, selectedStudent]);
   return (
-    <div>
-      <p>Assignments</p>
-      <form
-        onSubmit={(e) => handleSubmit(e, edit ? true : false)}
-        className="flex flex-col"
-      >
-        {edit && (
-          <label>
-            assignment Id:
-            <input type="text" name="_id" value={edit._id} readOnly />
-          </label>
-        )}
-
-        <label>
-          user Id:
-          <input
-            type="text"
-            name="userId"
-            value={edit ? edit.userId : selectedStudent.userId}
-            readOnly
-          />
-        </label>
-        <label>
-            category
-            <select name="category" id="category">
-              <option value={edit?.category ?? "general"}>{edit?.category ?? "general"}</option>
-              <option
-                value={edit?.status === "writing" ? "general" : "writing"}
-              >
-                {edit?.category === "writing" ? "general" : "writing"}
-              </option>
-            </select>
-          </label>
-        <label>
-          title
-          <input
-            type="text"
-            name="title"
-            defaultValue={edit ? edit.title : ""}
-          />
-        </label>
-        <label>
-          description
-          <input
-            type="text"
-            name="description"
-            defaultValue={edit ? edit.description : ""}
-          />
-        </label>
-        {edit && (
-          <label>
-            status
-            <select name="status" id="status">
-              <option value={edit.status}>{edit.status}</option>
-              <option
-                value={edit.status === "pending" ? "completed" : "pending"}
-              >
-                {edit.status === "pending" ? "completed" : "pending"}
-              </option>
-            </select>
-          </label>
-        )}
-        {loading ? <LoadingSpinner /> : <button type="submit">submit</button>}
-        {edit && <button onClick={() => setEdit()}>cancel</button>}
-      </form>
-      <table>
-        <thead>
-          <tr>
-            <th>title</th>
-            <th>descirption</th>
-            <th>category</th>
-            <th>status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {assignments.length > 0 &&
-            assignments.map((assignment) => {
-              return (
-                <tr key={assignment._id}>
-                  <td className="">{assignment?.title}</td>
-                  <td className="">{assignment?.description}</td>
-                  <td className="">{assignment?.category}</td>
-                  <td className="">
-                    <button onClick={() => setEdit(assignment)}>
-                      {assignment?.status}
+    <div className="flex flex-col w-full p-3 place-items-center">
+     <AssignmentSubmission handleSubmit={handleSubmit} edit={edit} setEdit={setEdit} loading={loading} selectedStudent={selectedStudent} setLoading={setLoading} setTrigger={setTrigger} trigger={trigger}/>
+     <table className="border-1 md:m-10 w-full">
+          <thead>
+            <tr className="border-1 border-b-2">
+              <th className="font-normal">title</th>
+              <th className="hidden font-normal md:table-cell">description</th>
+              <th className="font-normal">category</th>
+              <th className="font-normal">status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {assignments.length > 0 &&
+              assignments.map((task) => {
+                let status;
+                if (
+                  task?.category === "writing" &&
+                  task?.status === "pending"
+                ) {
+                  status = (
+                    <button
+                      className="hover:underline text-blue-700"
+                      onClick={() => {
+                        setSubmit(true)
+                        setTitle(task?.title)
+                        setAssignment(task)
+                      }}
+                    >
+                      submit
                     </button>
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
+                  );
+                } else {
+                  status = task?.status;
+                }
+                return (
+                  <>
+                    <tr
+                      key={task._id}
+                      className="hover:bg-amber-50 h-[40px]"
+                      onClick={() => setShowDescription(showDescription === task._id ? false : task._id)}
+                    >
+                      <td className="text-center">{task?.title}</td>
+                      <td className="p-3 hidden md:table-cell whitespace-pre-wrap">
+                        {task?.description}
+                      </td>
+                      <td className="text-center">{task?.category}</td>
+                      <td className="text-center">{status}</td>
+                    </tr>
+                    <tr className={showDescription === task._id ? "md:hidden table-row whitespace-pre-wrap" : "hidden"}>
+                      <td colSpan={3} className="pl-5">{task?.description}</td>
+                    </tr>
+                    <tr className={showDescription === task._id ? "table-row text-center h-[40px]" : "hidden"}>
+                      <td className="text-blue-600 pl-5" onClick={()=>setEdit(task)}>edit</td>
+                      
+                    </tr>
+                  </>
+                );
+              })}
+          </tbody>
+        </table>
     </div>
   );
 }

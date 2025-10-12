@@ -1,4 +1,4 @@
-import { createAssignment, fetchAssignments, updateAssignment } from "@/server/controllers/assignmentsController";
+import { createAssignment, fetchAssignments, removeAssignment, updateAssignment } from "@/server/controllers/assignmentsController";
 
 export async function GET(request) {
     try {
@@ -29,6 +29,16 @@ export async function PUT(request) {
         return Response.json({ success: true, data: updatedAssignment }, { status: 201 });
     } catch (error) {
         console.error("Error updating assignment:", error);
+        return Response.json({ success: false, error: error.message }, { status: 500 });
+    }
+}
+export async function DELETE(request) {
+    try {
+        const _id = await request.json();
+        const deletedAssignment = await removeAssignment(_id);
+        return Response.json({ success: true, data: deletedAssignment }, { status: 200 });
+    } catch (error) {
+        console.error("Error deleting assignment:", error);
         return Response.json({ success: false, error: error.message }, { status: 500 });
     }
 }

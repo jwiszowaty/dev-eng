@@ -3,9 +3,7 @@ export async function getStudents(uid) {
   if (!res.ok) throw new Error("Failed to fetch users");
   return res.json();
 }
-export async function updateStudent(data) {
-  console.log(data);
-
+export async function updateUser(data) {
   const res = await fetch(`/api/users`, {
     method: "PUT",
     headers: {

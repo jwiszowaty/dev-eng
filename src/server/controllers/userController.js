@@ -11,9 +11,9 @@ export async function findStudents(userId) {
   return User.find({teacher: userId }).exec();
 }
 
-export async function createUser(userId, type) {
+export async function createUser(user) {
   await connectDB();
-  const newUser = new User({ userId, type });
+  const newUser = new User({ userId: user.uid, type: "student", name: user.name, email: user.email, teacher: null });
   return newUser.save();
 }
 

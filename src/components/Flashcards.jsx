@@ -1,19 +1,31 @@
-import { getVocabulary } from "@/services/vocabularyApi";
+import { getVocabulary, postVocabulary } from "@/services/vocabularyApi";
 import { useEffect, useState } from "react";
 
 function Flashcards({ selectedStudent }) {
-  const [englishExample, setEnglishExample] = useState("");
-  const [polishExample, setPolishExample] = useState("");
-  const [polish, setPolish] = useState("");
-  const [english, setEnglish] = useState("");
-  const [vocabulary, setVocabulary] = useState();
+  const [flashcard, setFlashcard] = useState({userId: selectedStudent.userId, polish: "", english: "", polishExample: "", englishExample: "", difficulty: 0})
+  
+  const [flashcards, setFlashcards] = useState();
   const [showExample, setShowExample] = useState("");
+  const [trigger, setTrigger] = useState(false);
+   async function handleDelete(id) {
+    console.log("word: ", id);
+    await fetch(`/api/vocabulary?id=${id}`, { method: "DELETE" });
+    setTrigger(!trigger)
+   }
+  async function handleSubmit() {
+
+    console.log(flashcard);
+    await postVocabulary(flashcard);
+    setFlashcard({ userId: selectedStudent.userId, polish: "", english: "", polishExample: "", englishExample: "", difficulty: 0 });
+    setTrigger(!trigger);
+  }
   useEffect(() => {
     (async function () {
+      console.log(flashcard);
       const words = await getVocabulary(selectedStudent.userId);
-      setVocabulary(words);
+      setFlashcards(words);
     })();
-  }, [selectedStudent]);
+  }, [selectedStudent, trigger]);
   return (
     <div className="h-full pl-10 box-border max-w-5xl grid col-start-2 col-end-3 row-start-2 grid-rows-[min_90px_26px_auto] w-[60vw] pt-0 border-blue-950">
       <form
@@ -27,15 +39,21 @@ function Flashcards({ selectedStudent }) {
           <div className="flex gap-2 w-full justify-start place-items-center">
             <span className="text-2xl">🇬🇧</span>
             <input
-              onChange={(e) => setEnglish(e.target.value)}
-              value={english}
+              onChange={(e) => {
+                setFlashcard(prev => ({ ...prev, english: e.target.value }))
+                console.log(flashcard);
+              }}
+              value={flashcard.english}
               className="border-1 border-gray-400 text-center h-min"
               placeholder="english"
               required
             />
             <input
-              onChange={(e) => setEnglishExample(e.target.value)}
-              value={englishExample}
+              onChange={(e) => {
+                setFlashcard(prev => ({ ...prev, englishExample: e.target.value }))
+                console.log(flashcard);
+              }}
+              value={flashcard.englishExample}
               className="w-full border-1 border-gray-400 text-center h-min"
               placeholder="example"
             />
@@ -43,15 +61,21 @@ function Flashcards({ selectedStudent }) {
           <div className="flex gap-2 w-full justify-start place-items-center">
             <span className="text-2xl">🇵🇱</span>
             <input
-              onChange={(e) => setPolish(e.target.value)}
-              value={polish}
+              onChange={(e) => {
+                setFlashcard(prev => ({ ...prev, polish: e.target.value }))
+                console.log(flashcard);
+              }}
+              value={flashcard.polish}
               className="border-1 border-gray-400 text-center h-min"
               placeholder="polish"
               required
             />
             <input
-              onChange={(e) => setPolishExample(e.target.value)}
-              value={polishExample}
+              onChange={(e) => {
+                setFlashcard(prev => ({ ...prev, polishExample: e.target.value }))
+                console.log(flashcard);
+              }}
+              value={flashcard.polishExample}
               className="w-full border-1 border-gray-400 text-center h-min"
               placeholder="przykład"
             />
@@ -71,14 +95,14 @@ function Flashcards({ selectedStudent }) {
         <p className=""></p>
       </div>
       <div className="row-start-4 flex flex-col overflow-y-auto h-full border-1 w-full">
-        {vocabulary?.length === 0 && <p className="mx-3">No words added.</p>}
-        {vocabulary?.length > 0 &&
-          vocabulary.map((word) => {
+        {flashcards?.length === 0 && <p className="mx-3">No words added.</p>}
+        {flashcards?.length > 0 &&
+          flashcards.map((word) => {
             return (
               <div key={word._id} className="h-min w-full hover:bg-amber-50">
                 <div className="grid grid-cols-[1fr_1fr_1fr_4fr] h-min place-items-center gap-4 shadow-md">
-                  <p className="px-2 h-min text-center">{word.polish}</p>
                   <p className="px-2 h-min text-center">{word.english}</p>
+                  <p className="px-2 h-min text-center">{word.polish}</p>
                   <p className="px-2 h-min text-center">{word.difficulty}</p>
                   <div className="flex place-items-center">
                     <div

@@ -3,7 +3,7 @@ export default function LoadingSpinner() {
     <button
       disabled
       type="button"
-      className="text-black focus:ring-4 focus:ring-black-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 inline-flex items-center"
+      className="text-black w-min font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2 inline-flex items-center"
     >
       <svg
         aria-hidden="true"

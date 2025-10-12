@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
     userId: { type: String, required: true },
     type: { type: String, enum: ['student', 'teacher'], required: true },
-    folderId: String,
+    teacher: String,
+    email: String,
     name: String,
 }, { collection: "users" })
 

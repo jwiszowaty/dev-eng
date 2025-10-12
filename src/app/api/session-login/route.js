@@ -12,6 +12,7 @@ export async function POST(req) {
         if (!mongoUser) {
             await createUser(user.uid, "student");
             mongoUser = await findUserById(user.uid);
+            
         }
         const userType = mongoUser.get("type");
 

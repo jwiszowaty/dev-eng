@@ -4,7 +4,6 @@ const essaySchema = new Schema({
     userId: { type: String, required: true },
     title: String,
     text: String,
-    aiFeedback: String,
     feedback: String,
 }, { collection: "essays" })
 
