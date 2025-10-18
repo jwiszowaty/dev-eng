@@ -49,6 +49,14 @@ export default function SubNavBar({
               Assignments
             </button>
             <button
+              onClick={() => setView("resources")}
+              className={"underline".concat(
+                view === "resources" ? " font-bold" : ""
+              )}
+            >
+              Resources
+            </button>
+            <button
               onClick={() => setView("flashcards")}
               className={"underline".concat(
                 view === "flashcards" ? " font-bold" : ""

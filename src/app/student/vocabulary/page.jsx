@@ -81,7 +81,7 @@ export default function Vocabulary() {
             e.preventDefault();
             handleSubmit();
           }}
-          className="flex flex-col md:flex-row place-items-center my-4 p-2 h-full gap-4 bg-amber-200"
+          className="border rounded flex flex-col md:flex-row place-items-center my-4 p-2 h-full gap-4 bg-yellow-400"
         >
           <div className="flex flex-col justify-between w-full gap-4 h-full">
             <div className="flex flex-col md:flex-row gap-2 w-full justify-start place-items-center">

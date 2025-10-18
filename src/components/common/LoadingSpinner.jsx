@@ -3,12 +3,12 @@ export default function LoadingSpinner() {
     <button
       disabled
       type="button"
-      className="text-black w-min font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2 inline-flex items-center"
+      className="flex gap-3 text-black w-min rounded place-items-center place-self-center"
     >
       <svg
         aria-hidden="true"
         role="status"
-        className="inline w-4 h-4 me-3 text-white animate-spin"
+        className="inline w-[15px] h-[15px] text-white animate-spin"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

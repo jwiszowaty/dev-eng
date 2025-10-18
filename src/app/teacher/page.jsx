@@ -1,11 +1,13 @@
 "use client";
 
+import resources from "@/app/teacher/resources/page";
 import Assignments from "@/components/Assignments";
-import NavBar from "@/components/common/NavBar";
 import Flashcards from "@/components/Flashcards";
 import StudentAccount from "@/components/StudentAccount";
 import SubNavBar from "@/components/SubNavBar";
 import EssaysTeacher from "@/components/teacher/EssaysTeacher";
+import IndividualResources from "@/components/teacher/IndividualResources";
+import NavBarTeacher from "@/components/teacher/NavBarTeacher";
 import { useAuth } from "@/contexts/AuthContext";
 import { getStudents } from "@/services/userApi";
 import { useEffect, useState } from "react";
@@ -23,6 +25,7 @@ export default function page() {
         const ownStudents = response.data.map((student) => ({
           userId: student.userId,
           name: student.name,
+          resources : student.resources ?? ""
         }));
         setStudents(ownStudents);
         setSelectedStudent(ownStudents[0]);
@@ -32,7 +35,7 @@ export default function page() {
   }, [currentUser]);
   return (
     <div className="flex flex-col w-full">
-      <NavBar user={"teacher"} />
+      <NavBarTeacher/>
       <SubNavBar
         students={students}
         selectedStudent={selectedStudent}
@@ -54,6 +57,9 @@ export default function page() {
       )}
       {selectedStudent && view === "written" && (
         <EssaysTeacher selectedStudent={selectedStudent} />
+      )}
+      {selectedStudent && view === "resources" && (
+        <IndividualResources selectedStudent={selectedStudent}/>
       )}
     </div>
   );

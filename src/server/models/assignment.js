@@ -5,8 +5,10 @@ const assignmentSchema = new Schema({
     category: { type: String, enum: ['general', 'writing'], default: 'general' },
     title: String,
     description: String,
+    resource: String,
+    section: String,
     status: { type: String, enum: ['pending', 'submitted', 'completed'], default: 'pending' },
-}, { collection: "assignments" })
+}, { collection: "assignments", strict: false });
 
 const Assignment = mongoose.models?.Assignment ?? mongoose.model("Assignment", assignmentSchema);
 

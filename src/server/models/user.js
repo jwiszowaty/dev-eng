@@ -6,7 +6,8 @@ const userSchema = new Schema({
     teacher: String,
     email: String,
     name: String,
-}, { collection: "users" })
+    resources: {type: Array, default: [], required: true},
+}, { collection: "users", strict: false });
 
 
 const User = mongoose.models?.User ?? mongoose.model("User", userSchema);

@@ -34,6 +34,7 @@ export async function POST(request) {
 export async function PUT(request) {
     try {
         const data = await request.json();
+        console.log("route data:", data);
         const updatedUser = await updateUser(data)
         if (!updatedUser) {
             return Response.json({ success: false, error: "User not found" }, { status: 404 });

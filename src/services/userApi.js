@@ -4,6 +4,8 @@ export async function getStudents(uid) {
   return res.json();
 }
 export async function updateUser(data) {
+  console.log("userApi:", data);
+  
   const res = await fetch(`/api/users`, {
     method: "PUT",
     headers: {

@@ -8,7 +8,10 @@ export default function StudentAccount({
   setSelectedStudent,
 }) {
   const [loading, setLoading] = useState(false);
-  useEffect(()=>{}, [])
+  useEffect(() => {
+    console.log(selectedStudent);
+    
+  }, [])
   return (
     <div className="w-full flex flex-col place-items-center">
       <p>Account details</p>
@@ -24,6 +27,16 @@ export default function StudentAccount({
               className="bg-gray-200 pr-3 px-3"
               value={selectedStudent.name}
               onChange={(e) => setSelectedStudent({...selectedStudent, name: e.target.value})}
+            />
+          </div>
+          <div className="flex flex-wrap place-content-center">
+            <p className="flex place-content-center flex-nowrap font-bold pr-3">resources:</p>
+            <input
+              className="bg-gray-200 pr-3 px-3"
+              value={selectedStudent.resources ? selectedStudent.resources.toString() : ""}
+              onChange={(e) => {
+                setSelectedStudent({ ...selectedStudent, resources: e.target.value.split(",") })
+              }}
             />
           </div>
         </div>

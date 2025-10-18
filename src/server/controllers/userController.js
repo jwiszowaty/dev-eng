@@ -17,7 +17,9 @@ export async function createUser(user) {
   return newUser.save();
 }
 
-export async function updateUser({userId, ...args}) {
+export async function updateUser({ userId, ...args }) {
+  
+  console.log("userController:", { userId, ...args });
   await connectDB();
    const updatedUser = await User.findOneAndUpdate(
      { userId },

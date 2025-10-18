@@ -33,7 +33,7 @@ function Flashcards({ selectedStudent }) {
           e.preventDefault();
           handleSubmit();
         }}
-        className="row-start-2 flex gap-2 place-items-center py-2 w-full h-[90px]"
+        className="bg-yellow-400 rounded border row-start-2 flex gap-2 place-items-center p-2 m-3 w-full h-[90px]"
       >
         <div className="flex flex-col justify-between w-full  gap-2 h-full">
           <div className="flex gap-2 w-full justify-start place-items-center">
@@ -44,7 +44,7 @@ function Flashcards({ selectedStudent }) {
                 console.log(flashcard);
               }}
               value={flashcard.english}
-              className="border-1 border-gray-400 text-center h-min"
+              className="bg-white border-1 border-gray-400 text-center h-min"
               placeholder="english"
               required
             />
@@ -54,7 +54,7 @@ function Flashcards({ selectedStudent }) {
                 console.log(flashcard);
               }}
               value={flashcard.englishExample}
-              className="w-full border-1 border-gray-400 text-center h-min"
+              className="bg-white w-full border-1 border-gray-400 text-center h-min"
               placeholder="example"
             />
           </div>
@@ -66,7 +66,7 @@ function Flashcards({ selectedStudent }) {
                 console.log(flashcard);
               }}
               value={flashcard.polish}
-              className="border-1 border-gray-400 text-center h-min"
+              className="bg-white border-1 border-gray-400 text-center h-min"
               placeholder="polish"
               required
             />
@@ -76,25 +76,25 @@ function Flashcards({ selectedStudent }) {
                 console.log(flashcard);
               }}
               value={flashcard.polishExample}
-              className="w-full border-1 border-gray-400 text-center h-min"
+              className="bg-white w-full border-1 border-gray-400 text-center h-min"
               placeholder="przykład"
             />
           </div>
         </div>
         <button
           type="submit"
-          className="rounded border-1 border-gray-700 px-1 my-2 w-min h-full outline-none"
+          className="bg-white rounded border-1 border-gray-700 px-1 my-2 w-min h-full outline-none"
         >
           add
         </button>
       </form>
-      <div className="row-start-3 grid grid-cols-[1fr_1fr_1fr_4fr] gap-4 h-min w-full place-items-center border-1">
+      <div className="row-start-3 grid grid-cols-[1fr_1fr_1fr_4fr] mx-3 gap-4 h-min w-full place-items-center border-1 border-b-0">
         <p className="px-2 text-center w-full">english</p>
         <p className="px-2 text-center w-full">polish</p>
         <p className="px-2 text-center w-full">karma</p>
         <p className=""></p>
       </div>
-      <div className="row-start-4 flex flex-col overflow-y-auto h-full border-1 w-full">
+      <div className="row-start-4 mx-3 flex flex-col overflow-y-auto h-full border-1 w-full">
         {flashcards?.length === 0 && <p className="mx-3">No words added.</p>}
         {flashcards?.length > 0 &&
           flashcards.map((word) => {

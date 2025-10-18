@@ -24,8 +24,8 @@ export default function NavBar() {
       )}
     >
       <div
-        className={"md:hidden mt-2 absolute place-items-center".concat(
-          showDropdownMenu ? " w-full justify-between" : " place-self-end place-content-end"
+        className={"md:hidden mt-2 absolute place-items-center place-self-end ".concat(
+          showDropdownMenu ? "w-min" : "place-content-end"
         )}
       >
         <svg
