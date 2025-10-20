@@ -35,18 +35,25 @@ let isConnected = false; // keep outside the function
 
 const connectDB = async (attempts = 0) => {
   try {
+    console.log("1 Connecting to MongoDB...");
+    
     if (isConnected) return;
 
+    console.log("2 Connecting to MongoDB... ");
+    console.log("MONGO_URI in app:", process.env.MONGO_URI);
     await mongoose.connect(process.env.MONGO_URI, {
       dbName: "dev-eng",
+  serverSelectionTimeoutMS: 5000, 
     });
 
+    console.log("3 Connecting to MongoDB... ");
     isConnected = true;
     console.log("Connected to MongoDB");
   } catch (error) {
     if (attempts < 3) {
       console.log("Connecting to MongoDB: attempt #", attempts + 1);
-      setTimeout(() => connectDB(attempts + 1), 9000);
+      await new Promise((resolve) => setTimeout(resolve, 5000)); // <== await delay
+      return connectDB(attempts + 1); 
     } else {
       console.error("Error connecting to MongoDB:", error);
       process.exit(1);

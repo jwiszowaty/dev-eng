@@ -2,8 +2,12 @@ import { connectDB } from "@/server/models/mongoDB.js";
 import { User } from "@/server/models/user.js";
 
 export async function findUserById(userId) {
+  console.log("userController findUserById:", userId);
+  
   await connectDB();
-  return User.findOne({ userId }).exec();
+  const user = await User.findOne({ userId }).exec();
+  console.log("found user:", user);
+  return user;
 }
 
 export async function findStudents(userId) {
@@ -19,7 +23,6 @@ export async function createUser(user) {
 
 export async function updateUser({ userId, ...args }) {
   
-  console.log("userController:", { userId, ...args });
   await connectDB();
    const updatedUser = await User.findOneAndUpdate(
      { userId },

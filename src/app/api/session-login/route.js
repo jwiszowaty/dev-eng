@@ -7,10 +7,16 @@ export async function POST(req) {
     const { idToken, user } = await req.json();
     try {
         let mongoUser;
+        console.log("verifyIdToken");
+        
         await admin.auth().verifyIdToken(idToken);
+        console.log("Token verified");
+        
         mongoUser = await findUserById(user.uid);
-        if (!mongoUser) {
-            await createUser(user.uid, "student");
+        console.log("mongoUser:", mongoUser, mongoUser === null);
+        
+        if (mongoUser === null) {
+            await createUser(user);
             mongoUser = await findUserById(user.uid);
             
         }
@@ -30,6 +36,7 @@ export async function POST(req) {
         });
         return response;
     } catch (error) {
+        console.log("Session login error route:", error);
         return NextResponse.json({ status: 'error', message: error.message }, { status: 401 });
     }
 }

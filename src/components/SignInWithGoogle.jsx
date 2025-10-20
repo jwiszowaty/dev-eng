@@ -21,14 +21,22 @@ export default function SignInWithGoogle({ setLoading }) {
         body: JSON.stringify({ idToken, user }),
       });
 
-      if (res.ok) {
-        console.log("Session cookie set!");
-      } else {
-        console.log(res);
-        
-        alert("cookie not set: ", res.statusText);
-      }
       const sessionLogin = await res.json();
+
+      if (!res.ok) {
+        console.error("Session login failed:", sessionLogin);
+        alert(`Login failed: ${sessionLogin.message || res.statusText}`);
+        setLoading(false);
+        return;
+      }
+
+      if (!sessionLogin.url) {
+        console.error("Invalid session login response:", sessionLogin);
+        alert("Unexpected response from server");
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch(`/api/users?userId=${user.uid}`);
       const mongoUser = await response.json();
       const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -37,7 +45,7 @@ export default function SignInWithGoogle({ setLoading }) {
       router.replace(sessionLogin.url);
     } catch (error) {
       console.log(error);
-      alert("error: ",error.message);
+      alert("error: ", error.message);
       setLoading(false);
     }
   };
