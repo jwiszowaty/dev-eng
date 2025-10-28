@@ -35,6 +35,8 @@ export async function PUT(request) {
 export async function DELETE(request) {
     try {
         const _id = await request.json();
+        console.log("DELETE route _id: ", _id);
+        
         const deletedAssignment = await removeAssignment(_id);
         return Response.json({ success: true, data: deletedAssignment }, { status: 200 });
     } catch (error) {

@@ -20,7 +20,7 @@ export default function Resources({ setEdit, trigger }) {
       {resources &&
         resources.map(({ _id, title, category, content }) => {
           
-          const contentParsed = JSON.parse(content.replace(/\n|\\/g,""));
+          const contentParsed = JSON.parse(content.replace(/\n|\\/g,"")) ?? {} ;
           return (
             <div
               key={_id}
@@ -38,10 +38,14 @@ export default function Resources({ setEdit, trigger }) {
                       <button onClick={() => setView(view === _id ? "" : _id)} className="text-blue-600 not-hover:underline">{ view === _id ? "collapse" : "expand"}</button>
               </div>
               {view === _id && (
-                <ul>
+                <ul className="flex flex-col">
                   {
                     Object.keys(contentParsed).map(key => {
-                      return <li className="flex ml-12 mb-3 gap-3"><p>{key}</p><a href={contentParsed[key].url} target="_blank" className="text-blue-600 not-hover:underline">link</a></li>
+                      return contentParsed[key].includes("https") ? (
+                        <li className="flex ml-12 gap-3"><p className="min-w-[20px]">{key}</p><a href={contentParsed[key].url} target="_blank" className="text-blue-600 not-hover:underline">url</a></li>
+                      ) : (
+                          <li className="flex ml-12 gap-3"><p className="min-w-[20px]">{key}</p><p>{ contentParsed[key]}</p></li>
+                      )
                   })
                   }
                 </ul>

@@ -8,24 +8,25 @@ import { useEffect, useState } from "react";
 function resources() {
   const [loading, setLoading] = useState(false)
   const [trigger, setTrigger] = useState(false)
-  const [edit, setEdit] = useState({_id: "", title: "", category: "", content: ""})
+  const [edit, setEdit] = useState({_id: "", title: "", category: "", content: "{}"})
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true)
     const formData = new FormData(e.target);
     const values = Object.fromEntries(formData.entries());
+    values.content = edit.content;
     console.log("edit: ",edit);
     console.log("values: ",values);
     
     
     if (edit._id) {
-      await putResource(edit);
+      await putResource(values);
     } else {
       await postResource(values);
     }
     e.target.reset()
     setLoading(false)
-    setEdit({_id: "", title: "", category: "", content: ""})
+    setEdit({_id: "", title: "", category: "", content: "{}"})
     setTrigger(!trigger)
   }
   useEffect(() => {}, [trigger]);

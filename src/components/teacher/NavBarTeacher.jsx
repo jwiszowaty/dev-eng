@@ -23,6 +23,9 @@ export default function NavBarTeacher() {
         className="flex flex-col place-items-center visible gap-3"
       >
         <nav className="flex flex-row place-items-center place-content-center w-full">
+          <Link className={linkCSS} href="/teacher">
+            dashboard
+          </Link>
           <Link className={linkCSS} href="/teacher/resources">
             resources
           </Link>

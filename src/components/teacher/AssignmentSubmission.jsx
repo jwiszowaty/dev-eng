@@ -1,5 +1,4 @@
 import LoadingSpinner from "@/components/common/LoadingSpinner";
-import { deleteAssignment } from "@/services/assignmentApi";
 import { getResources } from "@/services/resourceApi";
 import { useEffect, useState } from "react";
 
@@ -14,21 +13,33 @@ export default function AssignmentSubmission({
   trigger,
 }) {
   const [resources, setResources] = useState();
-  const [selectedResource, setSelectedResource] = useState({index: undefined, value:undefined });
-  const [selectedSection, setSelectedSection] = useState(undefined);
+  const [sections, setSections] = useState();
+  const [selectedResource, setSelectedResource] = useState();
+  const [selectedSection, setSelectedSection] = useState();
   useEffect(() => {
+    setSelectedResource();
+    setSelectedSection();
     (async function () {
       let response = await getResources();
+      
       if (edit._id) {
+        setSelectedResource(edit.resource)
+        setSelectedSection(edit.section)
         response = response.splice(response.findIndex(edit.resource), 1);
       }
+      const sectionsObject = {}
+      response.forEach(element => sectionsObject[element.title] = JSON.parse(element.content))
+      
+      setSections(sectionsObject)
       setResources(response);
     })();
-  }, [edit]);
+  }, [edit, trigger]);
+  const date = new Date();
   if (resources) {
     return (
+      <>
       <form
-        onSubmit={(e) => handleSubmit(e, edit ? true : false)}
+        onSubmit={(e) => handleSubmit(e)}
         className="flex flex-col bg-yellow-400 rounded border-1 p-1 gap-2 w-full md:max-w-[600px]"
       >
         {edit._id && (
@@ -38,7 +49,7 @@ export default function AssignmentSubmission({
           </label>
         )}
 
-        <label className="flex flex-nowrap gap-1">
+        <label className="hidden">
           uID:
           <input
             className="w-full"
@@ -82,50 +93,53 @@ export default function AssignmentSubmission({
             className="bg-white rounded border-1 w-full"
             type="text"
             name="title"
-            defaultValue={edit ? edit.title : ""}
+            defaultValue={edit._id ? edit.title : `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`}
           />
-        </label>
+          </label>
+          
+
         <label className="flex flex-nowrap gap-1">
           resource:
           <select
             name="resource"
             id="resource"
-            value={selectedResource.value}
+            value={selectedResource ? selectedResource : "choose"}
             className="bg-white rounded border-1"
             onChange={(e) => {
-              console.log(selectedResource);
-              
-              setSelectedResource({ index: e.target.value, value: resources[e.target.value].title })
+              if (selectedResource) setSelectedSection();
+              setSelectedResource(e.target.value)
             }}
           >
 
-          <option value={selectedResource.value ?? ""}>{selectedResource.value ?? "Select a resource"}</option>
-            {resources.map((element, i) => {
-              if (selectedResource.value == element.title) return;
+          <option value={selectedResource ? selectedResource : ""}>{selectedResource ? selectedResource : "Select a resource"}</option>
+            {resources.map((element) => {
+              if (selectedResource == element.title) return;
 
               return (
-                <option  key={element._id} value={i} name={element.title}>
+                <option  key={element._id} value={element.title}>
                   {element.title}
                 </option>
               );
             })}
           </select>
-        </label>
-        {selectedResource.index &&
+          </label>
+          
+
+        {selectedResource &&
          <label className="flex flex-nowrap gap-1">
-          section:
+          {(resources.filter(element => element.title === selectedResource))[0].category === "past papers" ? "title: " : "page: "}
           <select
             name="section"
             id="section"
             value={selectedSection}
-            className="bg-white rounded border-1"
+            className=" bg-white rounded border-1"
             onChange={(e) => setSelectedSection(e.target.value)}
           >
 
           <option value={selectedSection ?? ""}>{selectedSection ?? "Select a section"}</option>
-            {Object.keys(JSON.parse(resources[Number(selectedResource.index)].content)).map((section, index) => {
+            {Object.keys(sections[selectedResource]).map((section) => {
               return (
-                <option key={section+index} value={section} name={section}>
+                <option key={section} value={section}>
                   {section}
                 </option>
               );
@@ -133,19 +147,9 @@ export default function AssignmentSubmission({
           </select>
         </label> 
         }
-        {selectedSection &&   <label>url:<input className="w-full" value={(JSON.parse(resources[Number(selectedResource.index)].content))[selectedSection].url} readOnly/></label>}
-        {selectedSection &&
-          (JSON.parse(resources[Number(selectedResource.index)].content))[selectedSection].exercises.map((exercise, index) => {
-            let group = "";
-             for(let i = 0; i<exercise; i++) {
-              const ex = (index + 1).toString() + "." + (i + 1).toString();
-               group += `<label key="${index}/label" className="flex"><input type="checkbox" name=${ex}/>${ ex }</label>`
-            }
-            return <div key={`${index}|div`} dangerouslySetInnerHTML={{ __html: group }} className="flex w-full gap-2"></div>
-          }
-        )
-        }
-        <label className="flex flex-col gap-1">
+        {selectedSection &&   <label className="">{sections[selectedResource][selectedSection].includes("http") ? "url: " : "topic: "}<input className="w-full" defaultValue={sections[selectedResource][selectedSection]} readOnly/></label>}
+       
+          <label className="flex flex-col gap-1">
           description
           <textarea
             className="bg-white rounded border p-1 resize-none overflow-y-auto h-[32px]"
@@ -169,20 +173,10 @@ export default function AssignmentSubmission({
             submit
           </button>
         )}
-        {edit && <button onClick={() => setEdit()}>cancel</button>}
-        {edit && (
-          <button
-            onClick={async () => {
-              setLoading(true);
-              await deleteAssignment(edit._id);
-              setLoading(false);
-              setTrigger(!trigger);
-            }}
-          >
-            delete
-          </button>
-        )}
       </form>
+        {edit._id && <button onClick={() => setEdit({_id:""})}>cancel</button>}
+        
+    </>
     );
   } else {
     <LoadingSpinner />;

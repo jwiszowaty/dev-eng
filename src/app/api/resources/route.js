@@ -1,5 +1,4 @@
 import { createResource, findResources, updateResource } from "@/server/controllers/resourcesController";
-import qs from 'qs';
 export async function POST(request) {
     try {
         const resource = await request.json();
@@ -22,10 +21,6 @@ export async function GET() {
 export async function PUT(request) {
     try {
         const resource = await request.json();
-        const parsed = qs.parse(resource, {allowDots: true});
-        console.log(parsed);
-        console.log(resource);
-        
         const updatedResource = await updateResource(resource);
         return Response.json({ success: true, data: updatedResource }, { status: 200 });
     } catch (error) {

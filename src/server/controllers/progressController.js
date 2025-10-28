@@ -11,7 +11,7 @@ export async function findProgress(userId) {
 }
 export async function createProgress(data) {
     try {
-        const newProgress = new Progress(data);
+        const newProgress = new Progress({userId: data.userId, resource: data.resource, section: data.section});
         await newProgress.save();
         return newProgress;
     } catch (error) {

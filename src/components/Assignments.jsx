@@ -18,12 +18,13 @@ export default function Assignments({ selectedStudent }) {
   const [trigger, setTrigger] = useState(false);
   const [edit, setEdit] = useState({ _id: "" });
   const [loading, setLoading] = useState(false);
-  async function handleSubmit(e, edit) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
-    setEdit({ _id: "" });
     const formData = new FormData(e.target);
     const values = Object.fromEntries(formData.entries());
+    console.log(edit);
+    
     if (edit._id) {
       await putAssignment(values);
     } else {
@@ -31,13 +32,13 @@ export default function Assignments({ selectedStudent }) {
     }
     setLoading(false);
     e.target.reset();
+    setEdit({_id:""})
     setTrigger(!trigger);
   }
   useEffect(() => {
     (async function () {
       const ownAssignments = await getAssignments(selectedStudent.userId);
       setAssignments(ownAssignments);
-      console.log(ownAssignments);
     })();
   }, [trigger, selectedStudent]);
   return (
@@ -53,35 +54,10 @@ export default function Assignments({ selectedStudent }) {
         trigger={trigger}
       />
       <table className="border-1 md:m-10 w-full">
-        <thead>
-          <tr className="border-1 border-b-2">
-            <th className="font-normal">date</th>
-            <th></th>
-            <th className="hidden font-normal md:table-cell">description</th>
-            <th className="font-normal">category</th>
-            <th className="font-normal">status</th>
-          </tr>
-        </thead>
         <tbody>
           {assignments.length > 0 &&
             assignments.map((task) => {
-              let status;
-              if (task?.category === "writing" && task?.status === "pending") {
-                status = (
-                  <button
-                    className="hover:underline text-blue-700"
-                    onClick={() => {
-                      setSubmit(true);
-                      setTitle(task?.title);
-                      setAssignment(task);
-                    }}
-                  >
-                    submit
-                  </button>
-                );
-              } else {
-                status = task?.status;
-              }
+            
               return (
                 <>
                   <tr
@@ -95,12 +71,12 @@ export default function Assignments({ selectedStudent }) {
                   >
                     <td className="text-center">{task?.title}</td>
                     <td>{task?.resource}</td>
-                    <td><a href={""}>{task?.section}</a></td>
+                    <td>{task?.section}</td>
                     <td className="p-3 hidden md:table-cell whitespace-pre-wrap">
                       {task?.description}
                     </td>
                     <td className="text-center">{task?.category}</td>
-                    <td className="text-center">{status}</td>
+                    <td className="text-center">{task?.status}</td>
                   </tr>
                   <tr
                     className={
@@ -122,10 +98,24 @@ export default function Assignments({ selectedStudent }) {
                   >
                     <td
                       className="text-blue-600 pl-5"
-                      onClick={() => setEdit(task)}
+                      onClick={() => {
+                        console.log(task);
+                        setEdit(task)
+                        
+                      }}
                     >
                       edit
                     </td>
+                    <td onClick={async () => {
+              setLoading(true);
+              await deleteAssignment(task._id);
+              setLoading(false);
+              setTrigger(!trigger);
+            }}>
+            
+          
+            delete
+          </td>
                   </tr>
                 </>
               );
