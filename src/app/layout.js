@@ -1,3 +1,5 @@
+console.log("BUILD: evaluating src/app/layout.js");
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/contexts/AuthContext";

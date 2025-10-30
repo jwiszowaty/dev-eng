@@ -1,5 +1,5 @@
 "use client"
-
+console.log("BUILD: evaluating src/app/teacher/assignments/written/page.jsx");
 import Assignments from "@/components/Assignments";
 import NavBar from "@/components/common/NavBar";
 import Flashcards from "@/components/Flashcards";

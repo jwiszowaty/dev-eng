@@ -1,4 +1,5 @@
 "use client";
+console.log("BUILD: evaluating src/app/page.jsx");
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import useNetworkStatus from "../hooks/useNetworkStatus";
 import NetworkOffline from "@/components/NetworkOffline";

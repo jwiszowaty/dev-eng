@@ -1,4 +1,5 @@
 "use client";
+console.log("BUILD: evaluating src/app/student/assignments/written/page.jsx");
 import { useEffect, useState } from "react";
 import { uploadEssay } from "@/lib/funcs";
 import { useAuth } from "@/contexts/AuthContext";

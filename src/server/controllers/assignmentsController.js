@@ -3,6 +3,7 @@ import { connectDB } from "@/server/models/mongoDB";
 import { Progress } from "@/server/models/progress";
 
 export async function fetchAssignments(userId) {
+    console.log("BUILD: evaluating src/server/controllers/assignmentsController.js for userId:");
     await connectDB();
     return Assignment.find({ userId }).exec();
 }

@@ -1,5 +1,3 @@
-import { postProgress } from "@/services/progressApi";
-
 export async function getAssignments(userId) {
     const res = await fetch(`/api/assignments?userId=${userId}`);
     if (!res.ok) throw new Error("Failed to fetch assignments");

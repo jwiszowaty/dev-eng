@@ -1,4 +1,5 @@
 "use client";
+console.log("BUILD: evaluating src/app/teacher/resources/page.jsx");
 import NavBarTeacher from "@/components/teacher/NavBarTeacher";
 import Resources from "@/components/teacher/Resources";
 import ResourceSubmission from "@/components/teacher/ResourceSubmission";

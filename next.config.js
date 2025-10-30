@@ -2,6 +2,9 @@
 const nextConfig = { 
     reactStrictMode: false,
     allowedDevOrigins: ['http://localhost:3000', '10.103.28.49:3000'],
+    logging: {
+    fetches: { fullUrl: true },
+  },
 };
 
 export default nextConfig;
